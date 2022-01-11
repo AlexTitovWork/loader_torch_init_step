@@ -33,6 +33,13 @@ int main(int argc, const char *argv[])
 {
 
   clock_t tTotal = clock();
+  clock_t tPreLoad = clock();
+
+  torch::Tensor tensor_image = torch::rand({1,400,400,3});
+  tensor_image = tensor_image.pin_memory();
+
+  printf("Pre-load, Mem pining.         Time taken: %.2fs\n", (double)(clock() - tPreLoad) / CLOCKS_PER_SEC);
+
 
   if (LOG_FLAG)
   {
@@ -60,7 +67,7 @@ int main(int argc, const char *argv[])
 
   cv::Rect myROI(30, 10, 400, 400);
 
-  printf("ROI set.\n Time taken: %.2fs\n", (double)(clock() - tROIset) / CLOCKS_PER_SEC);
+  printf("ROI set.          Time taken: %.2fs\n", (double)(clock() - tROIset) / CLOCKS_PER_SEC);
  
   clock_t tImgOneConversion = clock();
 
@@ -70,7 +77,7 @@ int main(int argc, const char *argv[])
 
   if (TIMERS_FLAG)
   {
-    printf("loader 1.\n Time taken: %.2fs\n", (double)(clock() - tLoadOpenCV) / CLOCKS_PER_SEC);
+    printf("CV loader 1.          Time taken: %.2fs\n", (double)(clock() - tLoadOpenCV) / CLOCKS_PER_SEC);
     // std::cout<<"tensor_image_style2 Loaded  and converted to Tensor. OK."<<std::endl;
   }
 
@@ -83,15 +90,15 @@ int main(int argc, const char *argv[])
   // torch::Tensor tensor_image = at::empty(gpu.sizes(), device(at::kCPU).pinned_memory(true));
   // torch::Tensor tensor_pinned = torch::empty(tensor_image.sizes(), device(torch::kCPU).pin_memory(true));
   clock_t tPin = clock();
-  torch::Tensor tensor_image = torch::from_blob(input.data, {1, input.rows, input.cols, 3}, torch::kByte);
-  tensor_image = tensor_image.pin_memory();
 
+
+  tensor_image = torch::from_blob(input.data, {1, input.rows, input.cols, 3}, torch::kByte);
   // tensor_image = tensor_image.pin_memory();
   // tensor_image = tensor_image.pin_memory(torch::kCUDA);
 
   if (TIMERS_FLAG)
   {
-    printf("Pin memory.\n Time taken: %.2fs\n", (double)(clock() - tPin) / CLOCKS_PER_SEC);
+    printf("Pin memory.         Time taken: %.2fs\n", (double)(clock() - tPin) / CLOCKS_PER_SEC);
     // std::cout<<"tensor_image_style2 Loaded  and converted to Tensor. OK."<<std::endl;
   }
 
@@ -130,7 +137,7 @@ int main(int argc, const char *argv[])
 
   if (TIMERS_FLAG)
   {
-    printf("CPU - GPU transfer 1.\n Time taken: %.2fs\n", (double)(clock() - tTester) / CLOCKS_PER_SEC);
+    printf("CPU - GPU transfer.         Time taken: %.2fs\n", (double)(clock() - tTester) / CLOCKS_PER_SEC);
   }
 
 
@@ -139,7 +146,7 @@ int main(int argc, const char *argv[])
 
   if (TIMERS_FLAG)
   {
-    printf("Image 1 loaded and converted for swap.\n Time taken: %.2fs\n", (double)(clock() - tImgOneConversion) / CLOCKS_PER_SEC);
+    printf("Processing.         Time taken: %.2fs\n", (double)(clock() - tImgOneConversion) / CLOCKS_PER_SEC);
   }
 
   
