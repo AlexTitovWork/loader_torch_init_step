@@ -35,6 +35,16 @@ find_package(OpenCV REQUIRED)
 message(STATUS "OpenCV_LIBS = ${OpenCV_LIBS}")
 
   
+# Request that particles_new_lib be built with -std=c++11
+# As this is a public compile feature anything that links to 
+# particles_new_lib will also build with -std=c++11
+# target_compile_features(particles_new_lib PUBLIC cxx_std_14)
+ 
+# We need to explicitly state that we need all CUDA files in the 
+# particles_new_lib library to be built with -dc as the member functions 
+# could be called by other libraries and executables
+# set_target_properties( particles_new_lib
+#                        PROPERTIES CUDA_SEPARABLE_COMPILATION ON)
  
 add_executable(loader_torch_init_step loader_torch_init_step.cpp)
  

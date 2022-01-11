@@ -19,10 +19,14 @@ using namespace std;
 //-----------------------
 /*
  * cmd line build:
-  # For the Docker build
+ # For the Docker build
+
  sudo cmake -DCMAKE_PREFIX_PATH=../libtorch .
  sudo cmake --build . --config Release
- ./loader_torch_init_step ./test_data/style2.png
+ ./loader_torch_init_step test_data/style2.png
+
+ # Time testing
+time ./loader_torch_init_step ./test_data/structure2.png
 */
 
 int main(int argc, const char *argv[])
@@ -120,6 +124,8 @@ int main(int argc, const char *argv[])
 // 	}
 // 	cudaStreamSynchronize(stream.stream());
 
+
+  //end test 
 
 
   if (TIMERS_FLAG)

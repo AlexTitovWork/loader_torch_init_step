@@ -30,6 +30,7 @@
 *.exe
 *.out
 *.app
+loader_torch_init_step
 # cache and compillation files
 /CMakeFiles/
 /Testing/
@@ -38,3 +39,9 @@ CMakeCache.txt
 CTestTestfile.cmake
 DartConfiguration.tcl
 Makefile
+# cuda compillation gen
+detect_cuda_compute_capabilities.cu
+detect_cuda_version.cc
+# library dependency
+
+/libtorch/
