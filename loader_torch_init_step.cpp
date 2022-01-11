@@ -38,7 +38,7 @@ int main(int argc, const char *argv[])
   torch::Tensor tensor_image = torch::rand({1,400,400,3});
   tensor_image = tensor_image.pin_memory();
 
-  printf("Pre-load, Mem pining.         Time taken: %.2fs\n", (double)(clock() - tPreLoad) / CLOCKS_PER_SEC);
+  printf("Pre-load, \nMem allocation and pining.   Time taken: %.2fs\n\n", (double)(clock() - tPreLoad) / CLOCKS_PER_SEC);
 
 
   if (LOG_FLAG)
@@ -67,7 +67,7 @@ int main(int argc, const char *argv[])
 
   cv::Rect myROI(30, 10, 400, 400);
 
-  printf("ROI set.          Time taken: %.2fs\n", (double)(clock() - tROIset) / CLOCKS_PER_SEC);
+    printf("ROI set.                   Time taken: %.2fs\n", (double)(clock() - tROIset) / CLOCKS_PER_SEC);
  
   clock_t tImgOneConversion = clock();
 
@@ -77,7 +77,7 @@ int main(int argc, const char *argv[])
 
   if (TIMERS_FLAG)
   {
-    printf("CV loader 1.          Time taken: %.2fs\n", (double)(clock() - tLoadOpenCV) / CLOCKS_PER_SEC);
+    printf("CV loader 1.               Time taken: %.2fs\n", (double)(clock() - tLoadOpenCV) / CLOCKS_PER_SEC);
     // std::cout<<"tensor_image_style2 Loaded  and converted to Tensor. OK."<<std::endl;
   }
 
@@ -89,7 +89,7 @@ int main(int argc, const char *argv[])
   // torch::Tensor tensor_pinned = at::empty(gpu.sizes(), device(at::kCPU).pinned_memory(true));
   // torch::Tensor tensor_image = at::empty(gpu.sizes(), device(at::kCPU).pinned_memory(true));
   // torch::Tensor tensor_pinned = torch::empty(tensor_image.sizes(), device(torch::kCPU).pin_memory(true));
-  clock_t tPin = clock();
+  clock_t tFitData = clock();
 
 
   tensor_image = torch::from_blob(input.data, {1, input.rows, input.cols, 3}, torch::kByte);
@@ -98,7 +98,7 @@ int main(int argc, const char *argv[])
 
   if (TIMERS_FLAG)
   {
-    printf("Pin memory.         Time taken: %.2fs\n", (double)(clock() - tPin) / CLOCKS_PER_SEC);
+    printf("Fit data in to memory. Time taken: %.2fs\n", (double)(clock() - tFitData) / CLOCKS_PER_SEC);
     // std::cout<<"tensor_image_style2 Loaded  and converted to Tensor. OK."<<std::endl;
   }
 
@@ -108,7 +108,7 @@ int main(int argc, const char *argv[])
   tensor_image = tensor_image.toType(torch::kFloat);
   tensor_image = tensor_image.div(255);
 
-  clock_t tTester = clock();
+  clock_t tTransferData = clock();
 
   tensor_image = tensor_image.to(torch::kCUDA, 1);
   // tensor_image = tensor_image.cuda();
@@ -137,7 +137,7 @@ int main(int argc, const char *argv[])
 
   if (TIMERS_FLAG)
   {
-    printf("CPU - GPU transfer.         Time taken: %.2fs\n", (double)(clock() - tTester) / CLOCKS_PER_SEC);
+    printf("CPU - GPU transfer/reassign. Time taken: %.2fs\n\n", (double)(clock() - tTransferData) / CLOCKS_PER_SEC);
   }
 
 
@@ -146,7 +146,7 @@ int main(int argc, const char *argv[])
 
   if (TIMERS_FLAG)
   {
-    printf("Processing.         Time taken: %.2fs\n", (double)(clock() - tImgOneConversion) / CLOCKS_PER_SEC);
+    printf("Processing. Time taken: %.2fs\n", (double)(clock() - tImgOneConversion) / CLOCKS_PER_SEC);
   }
 
   
