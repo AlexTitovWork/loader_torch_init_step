@@ -121,8 +121,6 @@ int main(int argc, const char *argv[])
 // 	cudaStreamSynchronize(stream.stream());
 
 
-  //end test 
-
 
   if (TIMERS_FLAG)
   {
