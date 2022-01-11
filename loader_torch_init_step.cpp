@@ -19,16 +19,10 @@ using namespace std;
 //-----------------------
 /*
  * cmd line build:
- sudo cmake -D CMAKE_BUILD_TYPE=RELEASE -D CMAKE_INSTALL_PREFIX=/usr/local -D WITH_TBB=ON -D BUILD_NEW_PYTHON_SUPPORT=ON -D WITH_V4L=ON -D INSTALL_C_EXAMPLES=ON -D INSTALL_PYTHON_EXAMPLES=ON -D BUILD_EXAMPLES=ON -D WITH_QT=ON -D WITH_GTK=ON -D WITH_OPENGL=ON .
- sudo cmake -DCMAKE_PREFIX_PATH=/home/interceptor/Документы/Git_Medium_repo/Binary_search_engine_CUDA/torch_cuda/libtorch   //WITHOUT CUDA - ONLY  CPU
- sudo cmake -DCMAKE_PREFIX_PATH=/home/interceptor/Документы/Git_Medium_repo/Binary_search_engine_CUDA/torch_to_cpp/libtorch //WITH CUDA LIB
- sudo cmake --build . --config Release
- ./particle_cuda_test
-
   # For the Docker build
- cmake -DCMAKE_PREFIX_PATH=../libtorch .
- cmake --build . --config Release
- ./particle_cuda_test
+ sudo cmake -DCMAKE_PREFIX_PATH=../libtorch .
+ sudo cmake --build . --config Release
+ ./loader_torch_init_step ./test_data/style2.png
 */
 
 int main(int argc, const char *argv[])
