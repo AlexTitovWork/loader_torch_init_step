@@ -1,0 +1,149 @@
+// coded by Alex. 28.10.2021
+// alexeytitovwork@gmail.com
+// Torch to CUDA data transfer test.
+#include <torch/script.h>
+#include <torch/torch.h>
+
+#include <memory>
+#include <time.h>
+
+#include <iostream>
+#include <opencv2/opencv.hpp>
+#include <opencv2/highgui.hpp>
+#include "opencv2/core.hpp"
+#define LOG_FLAG false
+#define TIMERS_FLAG true
+
+using namespace std;
+
+//-----------------------
+/*
+ * cmd line build:
+ sudo cmake -D CMAKE_BUILD_TYPE=RELEASE -D CMAKE_INSTALL_PREFIX=/usr/local -D WITH_TBB=ON -D BUILD_NEW_PYTHON_SUPPORT=ON -D WITH_V4L=ON -D INSTALL_C_EXAMPLES=ON -D INSTALL_PYTHON_EXAMPLES=ON -D BUILD_EXAMPLES=ON -D WITH_QT=ON -D WITH_GTK=ON -D WITH_OPENGL=ON .
+ sudo cmake -DCMAKE_PREFIX_PATH=/home/interceptor/Документы/Git_Medium_repo/Binary_search_engine_CUDA/torch_cuda/libtorch   //WITHOUT CUDA - ONLY  CPU
+ sudo cmake -DCMAKE_PREFIX_PATH=/home/interceptor/Документы/Git_Medium_repo/Binary_search_engine_CUDA/torch_to_cpp/libtorch //WITH CUDA LIB
+ sudo cmake --build . --config Release
+ ./particle_cuda_test
+
+  # For the Docker build
+ cmake -DCMAKE_PREFIX_PATH=../libtorch .
+ cmake --build . --config Release
+ ./particle_cuda_test
+*/
+
+int main(int argc, const char *argv[])
+{
+
+  clock_t tTotal = clock();
+
+  if (LOG_FLAG)
+  {
+    printf("OpenCV: %s", cv::getBuildInformation().c_str());
+  }
+  
+
+  // TODO INIT device and memory
+  if (LOG_FLAG)
+  {
+
+    torch::Device device = torch::kCPU;
+    if (torch::cuda::is_available())
+    {
+      std::cout << "CUDA is available! Training on GPU." << std::endl;
+      device = torch::kCUDA;
+    }
+    std::cout << "PyTorch version: "
+              << TORCH_VERSION_MAJOR << "."
+              << TORCH_VERSION_MINOR << "."
+              << TORCH_VERSION_PATCH << std::endl;
+  }
+
+  clock_t tROIset = clock();
+
+  cv::Rect myROI(30, 10, 400, 400);
+
+  printf("ROI set.\n Time taken: %.2fs\n", (double)(clock() - tROIset) / CLOCKS_PER_SEC);
+ 
+  clock_t tImgOneConversion = clock();
+
+  clock_t tLoadOpenCV = clock();
+
+  cv::Mat img = cv::imread(argv[1]); // 600x900
+
+  if (TIMERS_FLAG)
+  {
+    printf("loader 1.\n Time taken: %.2fs\n", (double)(clock() - tLoadOpenCV) / CLOCKS_PER_SEC);
+    // std::cout<<"tensor_image_style2 Loaded  and converted to Tensor. OK."<<std::endl;
+  }
+
+  cv::Mat croppedImage = img(myROI);
+  cv::Mat input; 
+  cv::cvtColor(croppedImage, input, cv::COLOR_BGR2RGB);
+
+
+  // torch::Tensor tensor_pinned = at::empty(gpu.sizes(), device(at::kCPU).pinned_memory(true));
+  // torch::Tensor tensor_image = at::empty(gpu.sizes(), device(at::kCPU).pinned_memory(true));
+  // torch::Tensor tensor_pinned = torch::empty(tensor_image.sizes(), device(torch::kCPU).pin_memory(true));
+  clock_t tPin = clock();
+  torch::Tensor tensor_image = torch::from_blob(input.data, {1, input.rows, input.cols, 3}, torch::kByte);
+  tensor_image = tensor_image.pin_memory();
+
+  // tensor_image = tensor_image.pin_memory();
+  // tensor_image = tensor_image.pin_memory(torch::kCUDA);
+
+  if (TIMERS_FLAG)
+  {
+    printf("Pin memory.\n Time taken: %.2fs\n", (double)(clock() - tPin) / CLOCKS_PER_SEC);
+    // std::cout<<"tensor_image_style2 Loaded  and converted to Tensor. OK."<<std::endl;
+  }
+
+  // torch::Tensor tensor_image = torch::from_blob(input.data, {1, input.rows, input.cols, 3}, torch::kByte).pin_memory(torch::kCPU);
+
+  tensor_image = tensor_image.permute({0, 3, 1, 2});
+  tensor_image = tensor_image.toType(torch::kFloat);
+  tensor_image = tensor_image.div(255);
+
+  clock_t tTester = clock();
+
+  tensor_image = tensor_image.to(torch::kCUDA, 1);
+  // tensor_image = tensor_image.cuda();
+  
+//TODO  
+//   //test low level code
+// cudaErr = cudaMemcpyAsync(data,
+// 		pitch,
+// 		inputData,
+// 		pitch,
+// 		pitch,
+// 		height,
+// 		cudaMemcpyHostToDevice,
+// 		stream.stream());
+
+// 	if (cudaErr != cudaSuccess)
+// 	{
+// 		std::cerr << "Error copying data" << std::endl;
+// 		return false;
+// 	}
+// 	cudaStreamSynchronize(stream.stream());
+
+
+  //end test 
+
+
+  if (TIMERS_FLAG)
+  {
+    printf("CPU - GPU transfer 1.\n Time taken: %.2fs\n", (double)(clock() - tTester) / CLOCKS_PER_SEC);
+  }
+
+
+  if (LOG_FLAG)
+    std::cout << "Loaded ok." << std::endl;
+
+  if (TIMERS_FLAG)
+  {
+    printf("Image 1 loaded and converted for swap.\n Time taken: %.2fs\n", (double)(clock() - tImgOneConversion) / CLOCKS_PER_SEC);
+  }
+
+  
+  std::cout << "ok!\n";
+}
