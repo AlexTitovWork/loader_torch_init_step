@@ -30,6 +30,11 @@
 *.exe
 *.out
 *.app
-
-./CMakeFiles
-./Testing
+# cache and compillation files
+/CMakeFiles/
+/Testing/
+cmake_install.cmake
+CMakeCache.txt
+CTestTestfile.cmake
+DartConfiguration.tcl
+Makefile
