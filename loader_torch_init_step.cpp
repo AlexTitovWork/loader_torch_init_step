@@ -160,8 +160,8 @@ int main(int argc, const char *argv[])
     // bool non_blocking = true;
     // torch::NoGradGuard no_grad;
 
-    // tensor_image = torch::from_blob(input.data, {1, input.rows, input.cols, 3}, torch::kByte );
-    tensor_image = torch::from_blob(input.data, {1, input.rows, input.cols, 3}, options);
+    tensor_image = torch::from_blob(input.data, {1, input.rows, input.cols, 3}, torch::kByte );
+    // tensor_image = torch::from_blob(input.data, {1, input.rows, input.cols, 3}, options);
 
     // torch::Tensor tensor_image = torch::from_blob(input.data, {1, input.rows, input.cols, 3}, torch::kByte );
     // tensor_image = tensor_image.pin_memory();
