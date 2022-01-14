@@ -137,8 +137,8 @@ int main(int argc, const char *argv[])
 
   clock_t tLoadOpenCV = clock();
 
-  // cv::Mat img = cv::imread(argv[1]); // 600x900
-  cv::Mat croppedImage = cv::imread(argv[1]); // 600x900
+  cv::Mat img = cv::imread(argv[1]); // 600x900
+  // cv::Mat croppedImage = cv::imread(argv[1]); // 600x900
 
   if (TIMERS_FLAG)
   {
@@ -146,7 +146,7 @@ int main(int argc, const char *argv[])
     // std::cout<<"tensor_image_style2 Loaded  and converted to Tensor. OK."<<std::endl;
   }
 
-  // cv::Mat croppedImage = img(myROI);
+  cv::Mat croppedImage = img(myROI);
   cv::Mat input; 
   cv::cvtColor(croppedImage, input, cv::COLOR_BGR2RGB);
 
@@ -160,7 +160,8 @@ int main(int argc, const char *argv[])
     // bool non_blocking = true;
     // torch::NoGradGuard no_grad;
 
-    tensor_image = torch::from_blob(input.data, {1, input.rows, input.cols, 3}, torch::kByte );
+    // tensor_image = torch::from_blob(input.data, {1, input.rows, input.cols, 3}, torch::kByte );
+    tensor_image = torch::from_blob(input.data, {1, input.rows, input.cols, 3}, options);
 
     // torch::Tensor tensor_image = torch::from_blob(input.data, {1, input.rows, input.cols, 3}, torch::kByte );
     // tensor_image = tensor_image.pin_memory();
@@ -205,7 +206,7 @@ int main(int argc, const char *argv[])
    //-------------------------------------------------------------------------
 
 
-    tensor_image = tensor_image.to(torch::kCUDA,torch::kFloat, non_blocking);
+    // tensor_image = tensor_image.to(torch::kCUDA,torch::kFloat, non_blocking);
     
   // tensor_image = tensor_image.to(torch::kCUDA, 1);
   // tensor_image = tensor_image.cuda();
