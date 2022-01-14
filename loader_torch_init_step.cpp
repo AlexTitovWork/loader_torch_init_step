@@ -35,8 +35,9 @@ int main(int argc, const char *argv[])
   clock_t tTotal = clock();
   clock_t tPreLoad = clock();
 
-  torch::Tensor tensor_image = torch::rand({1,400,400,3});
-  tensor_image = tensor_image.pin_memory();
+
+  // torch::Tensor tensor_image = torch::rand({1,400,400,3});
+  // tensor_image = tensor_image.pin_memory();
 
   printf("Pre-load, \nMem allocation and pining.   Time taken: %.2fs\n\n", (double)(clock() - tPreLoad) / CLOCKS_PER_SEC);
 
@@ -90,9 +91,10 @@ int main(int argc, const char *argv[])
   // torch::Tensor tensor_image = at::empty(gpu.sizes(), device(at::kCPU).pinned_memory(true));
   // torch::Tensor tensor_pinned = torch::empty(tensor_image.sizes(), device(torch::kCPU).pin_memory(true));
   clock_t tFitData = clock();
+  bool non_blocking = true;
 
 
-  tensor_image = torch::from_blob(input.data, {1, input.rows, input.cols, 3}, torch::kByte);
+  torch::Tensor tensor_image = torch::from_blob(input.data, {1, input.rows, input.cols, 3}, torch::kByte );
   // tensor_image = tensor_image.pin_memory();
   // tensor_image = tensor_image.pin_memory(torch::kCUDA);
 
@@ -109,8 +111,10 @@ int main(int argc, const char *argv[])
   tensor_image = tensor_image.div(255);
 
   clock_t tTransferData = clock();
+  //void Module::to(at::Device device, at::ScalarType dtype, bool non_blocking)
+  tensor_image = tensor_image.to(torch::kCUDA,torch::kFloat, non_blocking);
 
-  tensor_image = tensor_image.to(torch::kCUDA, 1);
+  // tensor_image = tensor_image.to(torch::kCUDA, 1);
   // tensor_image = tensor_image.cuda();
   
 //TODO  
