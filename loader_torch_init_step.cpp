@@ -39,7 +39,7 @@ time ./loader_torch_init_step ./test_data/structure2.png
 
 
 //TODO  -------------------------------------------------------------------------------------------------------------------------------
-//   //test low level code
+  //test low level code
 // int height =10;
 // int width = 10;
 // torch::Tensor tensorImageGpu;
@@ -58,6 +58,21 @@ time ./loader_torch_init_step ./test_data/structure2.png
 // 		height,
 // 		cudaMemcpyHostToDevice,
 // 		stream.stream());
+
+/*
+cudaMemcpy2DAsync(
+    dst: *mut c_void, 
+    dpitch: usize, 
+    src: *const c_void, 
+    spitch: usize, 
+    width: usize, 
+    height: usize, 
+    kind: cudaMemcpyKind, 
+    stream: *mut CUstream_st
+)
+*/
+
+
 
 // 	if (cudaErr != cudaSuccess)
 // 	{
@@ -81,6 +96,7 @@ int main(int argc, const char *argv[])
   std::vector<int64_t> dims = { 1, height, width, 3 };
   auto options = torch::TensorOptions().dtype(torch::kUInt8).device({ torch::kCUDA }).requires_grad(false);
   torch::Tensor tensor_image = torch::zeros(dims, options);
+
   //-----------------------------------------------------------------------------
 
   // torch::Tensor tensor_image = torch::rand({1,400,400,3});
@@ -141,8 +157,8 @@ int main(int argc, const char *argv[])
   clock_t tFitData = clock();
 
   {
-    bool non_blocking = true;
-    torch::NoGradGuard no_grad;
+    // bool non_blocking = true;
+    // torch::NoGradGuard no_grad;
 
     tensor_image = torch::from_blob(input.data, {1, input.rows, input.cols, 3}, torch::kByte );
 
@@ -164,6 +180,31 @@ int main(int argc, const char *argv[])
 
     clock_t tTransferData = clock();
     //void Module::to(at::Device device, at::ScalarType dtype, bool non_blocking)
+
+
+  //  //-------------------------------------------------------------------------
+  //   int height =10;
+  //   int width = 10;
+  //   torch::Tensor tensorImageGpu;
+  //   std::vector<int64_t> dims = { 1, height, width, 3 };
+  //   auto options = torch::TensorOptions().dtype(torch::kUInt8).device({ torch::kCUDA }).requires_grad(false);
+  //   tensorImageGpu = torch::zeros(dims, options);
+  //   auto data = tensor_image.data<uint8_t>();
+  //   auto pitch = width * sizeof(uint8_t) * 3;
+  //   uint8_t* data = new uint8_t[PATCH_HEIGHT * PATCH_WIDTH * 3];
+  //   auto stream = at::cuda::getStreamFromPool(true, 0);
+  //   cudaMemcpyAsync(data,
+  //       pitch,
+  //       data,
+  //       pitch,
+  //       pitch,
+  //       height,
+  //       cudaMemcpyHostToDevice,
+  //       stream.stream());
+
+   //-------------------------------------------------------------------------
+
+
     tensor_image = tensor_image.to(torch::kCUDA,torch::kFloat, non_blocking);
     
   // tensor_image = tensor_image.to(torch::kCUDA, 1);
