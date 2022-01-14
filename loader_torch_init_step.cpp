@@ -94,13 +94,18 @@ int main(int argc, const char *argv[])
   int height =400;
   int width = 400;
   std::vector<int64_t> dims = { 1, height, width, 3 };
-  auto options = torch::TensorOptions().dtype(torch::kUInt8).device({ torch::kCUDA }).requires_grad(false);
-  torch::Tensor tensor_image = torch::zeros(dims, options);
+  // auto options = torch::TensorOptions().dtype(torch::kUInt8).device({ torch::kCUDA }).requires_grad(false);
+  // torch::Tensor tensor_image = torch::zeros(dims, options);
 
   //-----------------------------------------------------------------------------
+  torch::Tensor tensor_image = torch::zeros(dims);
 
+ 
+  //-------------------------------------------------------------------------------
   // torch::Tensor tensor_image = torch::rand({1,400,400,3});
   // tensor_image = tensor_image.pin_memory();
+
+  //--------------------------------------------------------------------------------
 
   printf("Pre-load, \nMem allocation and pining.   Time taken: %.2fs\n\n", (double)(clock() - tPreLoad) / CLOCKS_PER_SEC);
 
