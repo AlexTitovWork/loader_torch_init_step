@@ -179,7 +179,8 @@ int main(int argc, const char *argv[])
     }
 
     // torch::Tensor tensor_image = torch::from_blob(input.data, {1, input.rows, input.cols, 3}, torch::kByte).pin_memory(torch::kCPU);
-
+//-------------------------------------------------------------------------
+    clock_t tTransferData = clock();
 
     tensor_image = tensor_image.to(torch::kCUDA, torch::kFloat, non_blocking);
 
@@ -187,7 +188,6 @@ int main(int argc, const char *argv[])
     tensor_image = tensor_image.toType(torch::kFloat);
     tensor_image = tensor_image.div(255);
 
-    clock_t tTransferData = clock();
     //void Module::to(at::Device device, at::ScalarType dtype, bool non_blocking)
 
 
