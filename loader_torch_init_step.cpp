@@ -36,8 +36,8 @@ int main(int argc, const char *argv[])
   clock_t tPreLoad = clock();
 
 
-  // torch::Tensor tensor_image = torch::rand({1,400,400,3});
-  // tensor_image = tensor_image.pin_memory();
+  torch::Tensor tensor_image = torch::rand({1,400,400,3});
+  tensor_image = tensor_image.pin_memory();
 
   printf("Pre-load, \nMem allocation and pining.   Time taken: %.2fs\n\n", (double)(clock() - tPreLoad) / CLOCKS_PER_SEC);
 
@@ -74,7 +74,8 @@ int main(int argc, const char *argv[])
 
   clock_t tLoadOpenCV = clock();
 
-  cv::Mat img = cv::imread(argv[1]); // 600x900
+  // cv::Mat img = cv::imread(argv[1]); // 600x900
+  cv::Mat croppedImage = cv::imread(argv[1]); // 600x900
 
   if (TIMERS_FLAG)
   {
@@ -82,7 +83,7 @@ int main(int argc, const char *argv[])
     // std::cout<<"tensor_image_style2 Loaded  and converted to Tensor. OK."<<std::endl;
   }
 
-  cv::Mat croppedImage = img(myROI);
+  // cv::Mat croppedImage = img(myROI);
   cv::Mat input; 
   cv::cvtColor(croppedImage, input, cv::COLOR_BGR2RGB);
 
@@ -93,8 +94,9 @@ int main(int argc, const char *argv[])
   clock_t tFitData = clock();
   bool non_blocking = true;
 
+  tensor_image = torch::from_blob(input.data, {1, input.rows, input.cols, 3}, torch::kByte );
 
-  torch::Tensor tensor_image = torch::from_blob(input.data, {1, input.rows, input.cols, 3}, torch::kByte );
+  // torch::Tensor tensor_image = torch::from_blob(input.data, {1, input.rows, input.cols, 3}, torch::kByte );
   // tensor_image = tensor_image.pin_memory();
   // tensor_image = tensor_image.pin_memory(torch::kCUDA);
 
