@@ -6,7 +6,15 @@
 
 #include <memory>
 #include <time.h>
-
+//----------------------------
+//async transfer
+#include <c10/cuda/CUDAStream.h>
+#include <c10/cuda/CUDAGuard.h>
+#include <cuda_runtime_api.h>
+#define DEFAULT_TORCH_SCRIPT ""
+#define PATCH_WIDTH (256)
+#define PATCH_HEIGHT (256)
+//----------------------------
 #include <iostream>
 #include <opencv2/opencv.hpp>
 #include <opencv2/highgui.hpp>
@@ -29,15 +37,54 @@ using namespace std;
 time ./loader_torch_init_step ./test_data/structure2.png
 */
 
+
+//TODO  -------------------------------------------------------------------------------------------------------------------------------
+//   //test low level code
+// int height =10;
+// int width = 10;
+// torch::Tensor tensorImageGpu;
+// std::vector<int64_t> dims = { 1, height, width, 3 };
+// auto options = torch::TensorOptions().dtype(torch::kUInt8).device({ torch::kCUDA }).requires_grad(false);
+// tensorImageGpu = torch::zeros(dims, options);
+// auto data = tensorImageGpu.data<uint8_t>();
+// auto pitch = width * sizeof(uint8_t) * 3;
+// uint8_t* data = new uint8_t[PATCH_HEIGHT * PATCH_WIDTH * 3];
+// auto stream = at::cuda::getStreamFromPool(true, 0);
+// cudaMemcpyAsync(data,
+// 		pitch,
+// 		data,
+// 		pitch,
+// 		pitch,
+// 		height,
+// 		cudaMemcpyHostToDevice,
+// 		stream.stream());
+
+// 	if (cudaErr != cudaSuccess)
+// 	{
+// 		std::cerr << "Error copying data" << std::endl;
+// 		return false;
+// 	}
+// 	cudaStreamSynchronize(stream.stream());
+
+
 int main(int argc, const char *argv[])
 {
 
   clock_t tTotal = clock();
   clock_t tPreLoad = clock();
 
+  //-----------------------------------------------------------------------------
+  //asynch transfer
 
-  torch::Tensor tensor_image = torch::rand({1,400,400,3});
-  tensor_image = tensor_image.pin_memory();
+  int height =400;
+  int width = 400;
+  std::vector<int64_t> dims = { 1, height, width, 3 };
+  auto options = torch::TensorOptions().dtype(torch::kUInt8).device({ torch::kCUDA }).requires_grad(false);
+  torch::Tensor tensor_image = torch::zeros(dims, options);
+  //-----------------------------------------------------------------------------
+
+  // torch::Tensor tensor_image = torch::rand({1,400,400,3});
+  // tensor_image = tensor_image.pin_memory();
 
   printf("Pre-load, \nMem allocation and pining.   Time taken: %.2fs\n\n", (double)(clock() - tPreLoad) / CLOCKS_PER_SEC);
 
