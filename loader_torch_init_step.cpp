@@ -36,22 +36,29 @@ using namespace std;
  # Time testing
 time ./loader_torch_init_step ./test_data/structure2.png
 
-  Processing result
+  Processing result:
+  
+  root@3ec54f35ea02:/home/loader_torch_init_step# cmake --build . --config Release
+  Scanning dependencies of target loader_torch_init_step
+  [ 50%] Building CXX object CMakeFiles/loader_torch_init_step.dir/loader_torch_init_step.cpp.o
+  [100%] Linking CXX executable loader_torch_init_step
+  [100%] Built target loader_torch_init_step
   root@3ec54f35ea02:/home/loader_torch_init_step# time ./loader_torch_init_step ./test_data/structure2.png
   Pre-load, 
-  Mem allocation and pining.   Time taken: 2.64s
+  Mem allocation and pining.   Time taken: 2.65s
 
   ROI set.                   Time taken: 0.00s
-  CV loader 1.               Time taken: 0.03s
-  Fit data in to memory. Time taken: 0.02s
+  CV loader 1.               Time taken: 0.04s
+  Fit data in to memory. Time taken: 0.00s
   CPU - GPU transfer/reassign. Time taken: 0.01s
 
-  Processing. Time taken: 0.10s
+  Processing. Time taken: 0.09s
   ok!
 
-  real	0m3.127s
-  user	0m1.713s
-  sys	0m1.525s
+  real	0m3.160s
+  user	0m1.593s
+  sys	0m1.609s
+
 */
 //------------------------------------------------------------------------------
 
