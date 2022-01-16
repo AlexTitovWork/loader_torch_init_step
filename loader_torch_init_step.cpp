@@ -210,7 +210,7 @@ int main(int argc, const char *argv[])
         stream.stream());
 
    //-------------------------------------------------------------------------
-
+  	cudaStreamSynchronize(stream.stream());
 
     tensor_image = tensor_image.permute({0, 3, 1, 2});
     tensor_image = tensor_image.toType(torch::kFloat);
