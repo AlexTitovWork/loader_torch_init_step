@@ -35,21 +35,27 @@ using namespace std;
 
  # Time testing
 time ./loader_torch_init_step ./test_data/structure2.png
-*/
 
-/* 
-Manual for CUDA asynch copy
-cudaMemcpy2DAsync(
-    dst: *mut c_void, 
-    dpitch: usize, 
-    src: *const c_void, 
-    spitch: usize, 
-    width: usize, 
-    height: usize, 
-    kind: cudaMemcpyKind, 
-    stream: *mut CUstream_st
-)
+  Processing result
+  root@3ec54f35ea02:/home/loader_torch_init_step# time ./loader_torch_init_step ./test_data/structure2.png
+  Pre-load, 
+  Mem allocation and pining.   Time taken: 2.64s
+
+  ROI set.                   Time taken: 0.00s
+  CV loader 1.               Time taken: 0.03s
+  Fit data in to memory. Time taken: 0.02s
+  CPU - GPU transfer/reassign. Time taken: 0.01s
+
+  Processing. Time taken: 0.10s
+  ok!
+
+  real	0m3.127s
+  user	0m1.713s
+  sys	0m1.525s
 */
+//------------------------------------------------------------------------------
+
+
 int main(int argc, const char *argv[]){
   clock_t tTotal = clock();
   clock_t tPreLoad = clock();
@@ -165,7 +171,19 @@ int main(int argc, const char *argv[]){
      * @brief Approach 3. CUDA Asynch approach, data transfering here in prepinned and preallocated memory.
      * Data transfer directly cuda copy, without using BLOB data
      * Worked but with similar perfomance as BLOB Approach 3.
+     *  
+     * Manual for CUDA asynch copy
+     * cudaMemcpy2DAsync(
+     * dst: *mut c_void, 
+     * dpitch: usize, 
+     * src: *const c_void, 
+     * spitch: usize, 
+     * width: usize, 
+     * height: usize, 
+     * kind: cudaMemcpyKind, 
+     * stream: *mut CUstream_st)
      */
+     
     // 
     // auto data = tensor_image.data_ptr<uint8_t>() ;
     // auto pitch = width * sizeof(uint8_t) * 3;
