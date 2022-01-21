@@ -29,9 +29,9 @@ using namespace std;
  * cmd line build:
  # For the Docker build
 
- sudo cmake -DCMAKE_PREFIX_PATH=../libtorch .
- sudo cmake --build . --config Release
- ./loader_torch_init_step test_data/style2.png
+cmake -DCMAKE_PREFIX_PATH=../libtorch .
+cmake --build . --config Release
+./loader_torch_init_step test_data/style2.png
 
  # Time testing
 time ./loader_torch_init_step ./test_data/structure2.png
@@ -245,8 +245,10 @@ int main(int argc, const char *argv[]){
 
     height = tensor_image.size(0);
     width = tensor_image.size(1);
+    int depth = tensor_image.size(2);
+    
     std::cout<<   "tensor_image Tensor size:"<<std::endl;
-    std::cout<<   height << "x"<< width <<std::endl;
+    std::cout<<   height << "x"<< width <<"x"<<depth <<std::endl;
     // tensor_image = tensor_image.to(torch::kCUDA, torch::kFloat, non_blocking);
     //-------------------------------------------------------------------------
     // Check Tensor in CUDA memory
