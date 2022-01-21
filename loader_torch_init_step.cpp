@@ -19,7 +19,7 @@
 #include <opencv2/opencv.hpp>
 #include <opencv2/highgui.hpp>
 #include "opencv2/core.hpp"
-#define LOG_FLAG false
+#define LOG_FLAG true
 #define TIMERS_FLAG true
 
 using namespace std;
@@ -242,6 +242,7 @@ int main(int argc, const char *argv[]){
      */
     tensor_image = tensor_image.to(torch::kCUDA);
 
+    std::cout<<tensor_image<<std::endl;
 
     height = tensor_image.size(0);
     width = tensor_image.size(1);
@@ -256,7 +257,6 @@ int main(int argc, const char *argv[]){
       printf("CPU - GPU transfer/reassign. Time taken: %.2fs\n\n", (double)(clock() - tTransferData) / CLOCKS_PER_SEC);
     }
     
-    std::cout<<tensor_image<<std::endl;
 
   }
 
