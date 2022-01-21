@@ -4,10 +4,16 @@ Tuning init step of torch. Tuning image loader in to torch tensor format<br>
 //-----------------------<br>
 /*<br>
  * cmd line build:<br>
- # For the Docker build<br>
+ # For local side
 
  sudo cmake -DCMAKE_PREFIX_PATH=../libtorch .<br>
  sudo cmake --build . --config Release<br>
+ ./loader_torch_init_step test_data/style2.png<br>
+
+ # For the Docker build<br>
+
+ cmake -DCMAKE_PREFIX_PATH=../libtorch .<br>
+ cmake --build . --config Release<br>
  ./loader_torch_init_step test_data/style2.png<br>
 
  # Time testing<br>
