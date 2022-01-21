@@ -252,10 +252,12 @@ int main(int argc, const char *argv[]){
     // tensor_image = tensor_image.to(torch::kCUDA, torch::kFloat, non_blocking);
     //-------------------------------------------------------------------------
     // Check Tensor in CUDA memory
-    // std::cout<<tensor_image<<std::endl;
     if (TIMERS_FLAG){
       printf("CPU - GPU transfer/reassign. Time taken: %.2fs\n\n", (double)(clock() - tTransferData) / CLOCKS_PER_SEC);
     }
+    
+    std::cout<<tensor_image<<std::endl;
+
   }
 
   if (LOG_FLAG)
