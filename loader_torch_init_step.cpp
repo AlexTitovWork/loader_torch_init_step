@@ -241,7 +241,7 @@ int main(int argc, const char *argv[]){
      * void Module::to(at::Device device, at::ScalarType dtype, bool non_blocking)
      */
     tensor_image = tensor_image.to(torch::kCUDA);
-
+    torch::cuda::synchronize();
 
     height = tensor_image.size(0);
     width = tensor_image.size(1);
