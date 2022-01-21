@@ -103,6 +103,8 @@ int main(int argc, const char *argv[]){
   torch::Tensor tensor_image = torch::zeros({1,height,width,3});
   // torch::Tensor tensor_image = torch::rand({1,400,400,3});
   tensor_image = tensor_image.pin_memory();
+  torch::cuda::synchronize(-1);
+
   //-----------------------------------------------------------------------------
   /**
    * @brief    Approach 3. Pre-allocate and pin memory before of trancfering.
@@ -240,8 +242,10 @@ int main(int argc, const char *argv[]){
      * @brief 
      * void Module::to(at::Device device, at::ScalarType dtype, bool non_blocking)
      */
+
     tensor_image = tensor_image.to(torch::kCUDA);
-    torch::cuda::synchronize();
+
+    torch::cuda::synchronize(-1);
 
     height = tensor_image.size(0);
     width = tensor_image.size(1);
