@@ -241,6 +241,12 @@ int main(int argc, const char *argv[]){
      * void Module::to(at::Device device, at::ScalarType dtype, bool non_blocking)
      */
     tensor_image = tensor_image.to(torch::kCUDA);
+
+
+    height = tensor_image.size(0);
+    width = tensor_image.size(1);
+    std::cout<<   "tensor_image Tensor size:"<<std::endl;
+    std::cout<<   height << "x"<< width <<std::endl;
     // tensor_image = tensor_image.to(torch::kCUDA, torch::kFloat, non_blocking);
     //-------------------------------------------------------------------------
     // Check Tensor in CUDA memory
@@ -256,5 +262,7 @@ int main(int argc, const char *argv[]){
   if (TIMERS_FLAG){
     printf("Processing. Time taken: %.2fs\n", (double)(clock() - tImgOneConversion) / CLOCKS_PER_SEC);
   }
+
+  
   std::cout << "ok!\n";
 }
