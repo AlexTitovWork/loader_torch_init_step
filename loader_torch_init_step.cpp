@@ -100,9 +100,9 @@ int main(int argc, const char *argv[]){
    */
   int height =400;
   int width = 400;
-  torch::Tensor tensor_image = torch::zeros({1,height,width,3});
+  // torch::Tensor tensor_image = torch::zeros({1,height,width,3});
   // torch::Tensor tensor_image = torch::rand({1,400,400,3});
-  tensor_image = tensor_image.pin_memory();
+  // tensor_image = tensor_image.pin_memory();
   //-----------------------------------------------------------------------------
   /**
    * @brief    Approach 3. Pre-allocate and pin memory before of trancfering.
@@ -161,11 +161,11 @@ int main(int argc, const char *argv[]){
      * @brief Approach 1. Base approach, blob and data transfering here, witout preallocation 
      * All time spended here. There are no preallocation and warming GPU. 
      */
-    // torch::Tensor tensor_image = torch::from_blob(input.data, {1, input.rows, input.cols, 3}, torch::kByte);
-    // tensor_image = tensor_image.permute({0, 3, 1, 2});
-    // tensor_image = tensor_image.toType(torch::kFloat);
-    // tensor_image = tensor_image.div(255);
-    // tensor_image = tensor_image.to(torch::kCUDA);
+    torch::Tensor tensor_image = torch::from_blob(input.data, {1, input.rows, input.cols, 3}, torch::kByte);
+    tensor_image = tensor_image.permute({0, 3, 1, 2});
+    tensor_image = tensor_image.toType(torch::kFloat);
+    tensor_image = tensor_image.div(255);
+    tensor_image = tensor_image.to(torch::kCUDA);
   //-------------------------------------------------------------------------
 
   clock_t tFitData = clock();
@@ -187,10 +187,10 @@ int main(int argc, const char *argv[]){
    * torch::Tensor tensor_image = torch::from_blob(input.data, {1, input.rows, input.cols, 3}, torch::kByte).pin_memory(torch::kCPU);
    */
   
-  tensor_image = torch::from_blob(input.data, {1, input.rows, input.cols, 3}, torch::kByte );
-  tensor_image = tensor_image.permute({0, 3, 1, 2});
-  tensor_image = tensor_image.toType(torch::kFloat);
-  tensor_image = tensor_image.div(255);
+  // tensor_image = torch::from_blob(input.data, {1, input.rows, input.cols, 3}, torch::kByte );
+  // tensor_image = tensor_image.permute({0, 3, 1, 2});
+  // tensor_image = tensor_image.toType(torch::kFloat);
+  // tensor_image = tensor_image.div(255);
 
     if (TIMERS_FLAG){
       printf("Fit data in to memory. Time taken: %.2fs\n", (double)(clock() - tFitData) / CLOCKS_PER_SEC);
