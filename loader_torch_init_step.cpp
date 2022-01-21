@@ -19,7 +19,7 @@
 #include <opencv2/opencv.hpp>
 #include <opencv2/highgui.hpp>
 #include "opencv2/core.hpp"
-#define LOG_FLAG true
+#define LOG_FLAG False
 #define TIMERS_FLAG true
 
 using namespace std;
