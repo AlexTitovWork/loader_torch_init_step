@@ -256,7 +256,7 @@ int main(int argc, const char *argv[]){
       printf("CPU - GPU transfer/reassign. Time taken: %.2fs\n\n", (double)(clock() - tTransferData) / CLOCKS_PER_SEC);
     }
     
-    std::cout<<tensor_image<<std::endl;
+    // std::cout<<tensor_image<<std::endl;
 
 
   }
