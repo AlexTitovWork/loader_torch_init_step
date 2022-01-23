@@ -99,6 +99,7 @@ void kernel(float num, float *a, int N)
 
 int main(int argc, const char *argv[]){
 
+    std::cout<< "CUDA direct data transfer() and init() C/C++ CUDA tools test.\n";
     int N = 2048*2;
     float *host_a, *device_a;        // Define host-specific and device-specific arrays.
     int size = sizeof(float) * N;
@@ -116,11 +117,11 @@ int main(int argc, const char *argv[]){
 
     size_t threadsPerBlock;
     size_t numberOfBlocks;
-    size_t numberOfSMs;
+    // size_t numberOfSMs;
 
     // numberOfSMs = 1;
     threadsPerBlock = 256;
-    numberOfBlocks = N /256;
+    numberOfBlocks = N /256 + 1;
 
     printf("Alloc. Time taken: %.2fs\n\n", (double)(clock() - tAlloc) / CLOCKS_PER_SEC);
     //----------------------------------------------------------------------------------
