@@ -3,7 +3,6 @@
 // Torch to CUDA data transfer test.
 #include <torch/script.h>
 #include <torch/torch.h>
-
 #include <memory>
 #include <time.h>
 //----------------------------
@@ -21,9 +20,7 @@
 #include "opencv2/core.hpp"
 #define LOG_FLAG false
 #define TIMERS_FLAG true
-
 using namespace std;
-
 //-----------------------
 /*
  * cmd line build:
@@ -75,6 +72,7 @@ Sun Jan 16 14:58:54 2022
 |  7%   44C    P0    62W / 250W |      3MiB / 11019MiB |      1%      Default |
 |                               |                      |                  N/A |
 +-------------------------------+----------------------+----------------------+
+
                                                                                
 +-----------------------------------------------------------------------------+
 | Processes:                                                                  |
@@ -83,11 +81,8 @@ Sun Jan 16 14:58:54 2022
 |=============================================================================|
 |    0   N/A  N/A    944573      C   ./loader_torch_init_step          985MiB |
 +-----------------------------------------------------------------------------+
-
 */
 //------------------------------------------------------------------------------
-
-
 int main(int argc, const char *argv[]){
   clock_t tTotal = clock();
   clock_t tPreLoad = clock();
@@ -100,10 +95,10 @@ int main(int argc, const char *argv[]){
    */
   int height =400;
   int width = 400;
+  torch::cuda::synchronize(-1);
   torch::Tensor tensor_image = torch::zeros({1,height,width,3});
   // torch::Tensor tensor_image = torch::rand({1,400,400,3});
   tensor_image = tensor_image.pin_memory();
-  torch::cuda::synchronize(-1);
 
   //-----------------------------------------------------------------------------
   /**
@@ -126,13 +121,13 @@ int main(int argc, const char *argv[]){
     printf("OpenCV: %s", cv::getBuildInformation().c_str());
   }
   
-  if (LOG_FLAG){
+  torch::Device device = torch::kCPU;
+  if (torch::cuda::is_available()){
+    std::cout << "CUDA is available! Training on GPU." << std::endl;
+    device = torch::kCUDA;
+  }
 
-    torch::Device device = torch::kCPU;
-    if (torch::cuda::is_available()){
-      std::cout << "CUDA is available! Training on GPU." << std::endl;
-      device = torch::kCUDA;
-    }
+  if (LOG_FLAG){
     std::cout << "PyTorch version: "
               << TORCH_VERSION_MAJOR << "."
               << TORCH_VERSION_MINOR << "."
@@ -140,7 +135,6 @@ int main(int argc, const char *argv[]){
   }
 
   clock_t tROIset = clock();
-
   cv::Rect myROI(30, 10, 400, 400);
   printf("ROI set.                   Time taken: %.2fs\n", (double)(clock() - tROIset) / CLOCKS_PER_SEC);
  
@@ -151,7 +145,7 @@ int main(int argc, const char *argv[]){
   // cv::Mat croppedImage = cv::imread(argv[1]); // 600x900
 
   if (TIMERS_FLAG){
-    printf("CV loader 1.               Time taken: %.2fs\n", (double)(clock() - tLoadOpenCV) / CLOCKS_PER_SEC);
+    printf("CV loader 1.          Time taken: %.2fs\n", (double)(clock() - tLoadOpenCV) / CLOCKS_PER_SEC);
     // std::cout<<"tensor_image_style2 Loaded  and converted to Tensor. OK."<<std::endl;
   }
 
@@ -189,6 +183,7 @@ int main(int argc, const char *argv[]){
    * torch::Tensor tensor_image = torch::from_blob(input.data, {1, input.rows, input.cols, 3}, torch::kByte).pin_memory(torch::kCPU);
    */
   
+  torch::cuda::synchronize(-1);
   tensor_image = torch::from_blob(input.data, {1, input.rows, input.cols, 3}, torch::kByte );
   tensor_image = tensor_image.permute({0, 3, 1, 2});
   tensor_image = tensor_image.toType(torch::kFloat);
@@ -242,10 +237,9 @@ int main(int argc, const char *argv[]){
      * @brief 
      * void Module::to(at::Device device, at::ScalarType dtype, bool non_blocking)
      */
-
+    torch::cuda::synchronize(-1);
     tensor_image = tensor_image.to(torch::kCUDA);
 
-    torch::cuda::synchronize(-1);
 
     height = tensor_image.size(0);
     width = tensor_image.size(1);
