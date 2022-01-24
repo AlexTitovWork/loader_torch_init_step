@@ -46,7 +46,8 @@ message(STATUS "OpenCV_LIBS = ${OpenCV_LIBS}")
 # set_target_properties( particles_new_lib
 #                        PROPERTIES CUDA_SEPARABLE_COMPILATION ON)
  
-add_executable(loader_torch_init_step loader_direct_cuda.cu)
+add_executable(loader_torch_init_step loader_torch_init_step.cpp)
+#add_executable(loader_torch_init_step loader_direct_cuda.cu)
  
 set_property(TARGET loader_torch_init_step 
              PROPERTY CUDA_SEPARABLE_COMPILATION ON)
