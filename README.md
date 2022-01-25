@@ -8,7 +8,7 @@ Tuning init step of torch. Tuning image loader in to torch tensor format<br>
  download libtorch lib with CUDA support in to ./home directory:<br>
   wget https://download.pytorch.org/libtorch/cu102/libtorch-cxx11-abi-shared-with-deps-1.10.1%2Bcu102.zip<br>
  
- download project in to ./home directory:
+ download project in to ./home directory:<br>
   git clone https://gitlab.com/pingpong_alex_optimization/swapping_optimized<br>
 
  # For local side
