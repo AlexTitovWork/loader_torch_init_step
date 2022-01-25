@@ -4,6 +4,13 @@ Tuning init step of torch. Tuning image loader in to torch tensor format<br>
 //-----------------------<br>
 /*<br>
  * cmd line build:<br>
+
+ download libtorch lib with CUDA support:<br>
+  wget https://download.pytorch.org/libtorch/cu102/libtorch-cxx11-abi-shared-with-deps-1.10.1%2Bcu102.zip<br>
+ int to ./home directory<br>
+ download project:
+  git clone https://gitlab.com/pingpong_alex_optimization/swapping_optimized<br>
+
  # For local side
 
  sudo cmake -DCMAKE_PREFIX_PATH=../libtorch .<br>
@@ -23,10 +30,10 @@ Tuning init step of torch. Tuning image loader in to torch tensor format<br>
 2. For test pure CUDA loader use "loader_direct_cuda.cu" and rename "CMakeLists_cuda.txt" in to 
 "CMakeLists.txt" repeat cmake and build instructions.
 
- # Time testing<br>
+ # Libtorch image loader - time test<br>
 time ./loader_torch_init_step ./test_data/structure2.png<br>
 
-  Processing result:<br>
+  Processing result after libtorch test:<br>
 
   root@3ec54f35ea02:/home/loader_torch_init_step# cmake --build . --config Release <br>
   Scanning dependencies of target loader_torch_init_step<br>
