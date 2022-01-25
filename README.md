@@ -9,7 +9,7 @@ Tuning init step of torch. Tuning image loader in to torch tensor format<br>
   wget https://download.pytorch.org/libtorch/cu102/libtorch-cxx11-abi-shared-with-deps-1.10.1%2Bcu102.zip<br>
  int to ./home directory<br>
  download project:
-  git clone https://gitlab.com/pingpong_alex_optimization/swapping_optimized<br>
+  git clone https://github.com/AlexTitovWork/loader_torch_init_step<br>
 
  # For local side
 
