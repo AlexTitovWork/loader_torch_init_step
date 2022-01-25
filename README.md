@@ -16,6 +16,13 @@ Tuning init step of torch. Tuning image loader in to torch tensor format<br>
  cmake --build . --config Release<br>
  ./loader_torch_init_step test_data/style2.png<br>
 
+
+1. For test Libtorch loader use "loader_torch_init_step.cpp" and rename "CMakeLists_torch_cv_cuda.txt" in to 
+"CMakeLists.txt" repeat cmake and build instructions.
+
+2. For test pure CUDA loader use "loader_direct_cuda.cu" and rename "CMakeLists_cuda.txt" in to 
+"CMakeLists.txt" repeat cmake and build instructions.
+
  # Time testing<br>
 time ./loader_torch_init_step ./test_data/structure2.png<br>
 
