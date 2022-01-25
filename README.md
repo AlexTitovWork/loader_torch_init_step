@@ -81,5 +81,32 @@ Sun Jan 16 14:58:54 2022       <br>
 |    0   N/A  N/A    944573      C   ./loader_torch_init_step          985MiB |<br>
 +-----------------------------------------------------------------------------+<br>
 <br>
+# Pure CUDA configuration - test loader
+$ ./loader_torch_init_step ./test_data/style2.png <br>
+Device Number: 0<br>
+  Device name: NVIDIA GeForce GTX 850M<br>
+  Memory Clock Rate (KHz): 1001000<br>
+  Memory Bus Width (bits): 128<br>
+  Peak Memory Bandwidth (GB/s): 32.032000<br>
+<br>
+  CUDA Driver Version / Runtime Version          11.5 / 10.2<br>
+  CUDA Capability Major/Minor version number:    5.0<br>
+________________________________________________<br>
+<br>
+CUDA direct data transfer() and init() C/C++ CUDA tools test.<br>
+Alloc. Time taken: 2.37s<br>
+<br>
+Init. Time taken: 0.00s<br>
+<br>
+tTransfer. Time taken: 0.00s<br>
+<br>
+tBack-Trans. Time taken: 0.00s<br>
+<br>
+33<br>
+0<br>
+tTotal. Time taken: 2.37s<br>
+<br>
+ok!<br>
+<br>
 */<br>
 //------------------------------------------------------------------------------<br>
