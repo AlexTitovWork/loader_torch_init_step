@@ -7,9 +7,11 @@
 #include <time.h>
 //----------------------------
 //async transfer
-#include <c10/cuda/CUDAStream.h>
-#include <c10/cuda/CUDAGuard.h>
-#include <cuda_runtime_api.h>
+// #include <c10/cuda/CUDAStream.h>
+// #include <c10/cuda/CUDAGuard.h>
+// #include <cuda_runtime_api.h>
+// #include <cuda_runtime.h>
+
 #define DEFAULT_TORCH_SCRIPT ""
 #define PATCH_WIDTH (400)
 #define PATCH_HEIGHT (400)
@@ -141,7 +143,7 @@ int main(int argc, const char *argv[]){
 
 
     //-----------------------------------------------------------------------------------
-    int N = 2048*2;
+    int N = 2048*2048;
     float *host_a, *device_a;        // Define host-specific and device-specific arrays.
     int size = sizeof(float) * N;
 
@@ -201,3 +203,4 @@ int main(int argc, const char *argv[]){
 
   std::cout << "ok!\n";
 }
+  
