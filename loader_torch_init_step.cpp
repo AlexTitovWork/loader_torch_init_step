@@ -7,9 +7,9 @@
 #include <time.h>
 //----------------------------
 //async transfer
-#include <c10/cuda/CUDAStream.h>
-#include <c10/cuda/CUDAGuard.h>
-#include <cuda_runtime_api.h>
+// #include <c10/cuda/CUDAStream.h>
+// #include <c10/cuda/CUDAGuard.h>
+// #include <cuda_runtime_api.h>
 #define DEFAULT_TORCH_SCRIPT ""
 #define PATCH_WIDTH (400)
 #define PATCH_HEIGHT (400)
@@ -29,6 +29,32 @@ using namespace std;
 cmake -DCMAKE_PREFIX_PATH=../libtorch .
 cmake --build . --config Release
 ./loader_torch_init_step test_data/style2.png
+
+
+// ISSUE ld -1 --------------------------------------------------------
+interceptor@interceptor-N750JK:~/Документы/Git_Medium_repo/Binary_search_engine_CUDA/loader_torch_init_step$ sudo cmake --build . --config Release 
+-- TORCH_LIBRARIES = torch;torch_library;/home/interceptor/Документы/Git_Medium_repo/Binary_search_engine_CUDA/libtorch/lib/libc10.so;/home/interceptor/Документы/Git_Medium_repo/Binary_search_engine_CUDA/libtorch/lib/libkineto.a
+-- OpenCV_LIBS = opencv_calib3d;opencv_core;opencv_dnn;opencv_features2d;opencv_flann;opencv_gapi;opencv_highgui;opencv_imgcodecs;opencv_imgproc;opencv_ml;opencv_objdetect;opencv_photo;opencv_stitching;opencv_video;opencv_videoio
+-- Configuring done
+-- Generating done
+-- Build files have been written to: /home/interceptor/Документы/Git_Medium_repo/Binary_search_engine_CUDA/loader_torch_init_step
+Consolidate compiler generated dependencies of target loader_torch_init_step
+[ 50%] Building CXX object CMakeFiles/loader_torch_init_step.dir/loader_torch_init_step.cpp.o
+[100%] Linking CXX executable loader_torch_init_step
+CMakeFiles/loader_torch_init_step.dir/loader_torch_init_step.cpp.o: In function `main':
+loader_torch_init_step.cpp:(.text+0x731): undefined reference to `cv::imread(std::string const&, int)'
+collect2: error: ld returned 1 exit status
+CMakeFiles/loader_torch_init_step.dir/build.make:115: recipe for target 'loader_torch_init_step' failed
+make[2]: *** [loader_torch_init_step] Error 1
+CMakeFiles/Makefile2:838: recipe for target 'CMakeFiles/loader_torch_init_step.dir/all' failed
+make[1]: *** [CMakeFiles/loader_torch_init_step.dir/all] Error 2
+Makefile:100: recipe for target 'all' failed
+make: *** [all] Error 2
+
+SOLVED 
+sometimes after delete all cache and cmake temp files use:
+sudo cmake -DCMAKE_PREFIX_PATH=/usr/local/lib . 
+//---------------------------------------------------------------------
 
  # Time testing
 time ./loader_torch_init_step ./test_data/structure2.png
