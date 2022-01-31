@@ -93,11 +93,11 @@ int main(int argc, const char *argv[]){
    * Module::to(at::ScalarType dtype, bool non_blocking)
    * Tested and worked.
    */
-  int height =400;
-  int width = 400;
+  int height =2048;
+  int width = 2048;
   torch::cuda::synchronize(-1);
   // torch::Tensor tensor_image = torch::zeros({1,height,width,3});
-  torch::Tensor tensor_image = torch::rand({1,400,400,3});
+  torch::Tensor tensor_image = torch::rand({1,2048,2048,3});
   tensor_image = tensor_image.pin_memory();
 
   //-----------------------------------------------------------------------------
