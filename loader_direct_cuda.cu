@@ -1,6 +1,13 @@
-// coded by Alex. 28.10.2021
-// alexeytitovwork@gmail.com
-// Torch to CUDA data transfer test.
+/**
+ * @file loader_direct_cuda.cu
+ * @author Alex Titov (alexeytitovwork@gmail.com)
+ * @brief CUDA memory init and data transfer in to CUDA memory.
+ * @version 0.1
+ * @date 2022-02-03
+ * @copyright Copyright (c) 2022
+ * 
+ */
+
 #include <torch/script.h>
 #include <torch/torch.h>
 #include <memory>
@@ -35,7 +42,7 @@ using namespace std;
 
 cmake -DCMAKE_PREFIX_PATH=../libtorch .
 cmake --build . --config Release
-./loader_torch_init_step test_data/style2.png
+./loader_torch_init_step 
 
  # Time testing
 time ./loader_torch_init_step ./test_data/structure2.png
@@ -47,21 +54,9 @@ time ./loader_torch_init_step ./test_data/structure2.png
   [ 50%] Building CXX object CMakeFiles/loader_torch_init_step.dir/loader_torch_init_step.cpp.o
   [100%] Linking CXX executable loader_torch_init_step
   [100%] Built target loader_torch_init_step
-  root@3ec54f35ea02:/home/loader_torch_init_step# time ./loader_torch_init_step ./test_data/structure2.png
-  Pre-load, 
-  Mem allocation and pining.   Time taken: 2.65s
+  root@3ec54f35ea02:/home/loader_torch_init_step# time ./loader_torch_init_step
 
-  ROI set.                   Time taken: 0.00s
-  CV loader 1.               Time taken: 0.04s
-  Fit data in to memory. Time taken: 0.00s
-  CPU - GPU transfer/reassign. Time taken: 0.01s
 
-  Processing. Time taken: 0.09s
-  ok!
-
-  real	0m3.160s
-  user	0m1.593s
-  sys	0m1.609s
 
 Sun Jan 16 14:58:54 2022       
 +-----------------------------------------------------------------------------+

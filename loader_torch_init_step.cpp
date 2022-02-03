@@ -1,6 +1,13 @@
-// coded by Alex. 28.10.2021
-// alexeytitovwork@gmail.com
-// Torch to CUDA data transfer test.
+/**
+ * @file loader_torch_init_step.cpp
+ * @author Alex Titov (alexeytitovwork@gmail.com)
+ * @brief   Perfomance test. 
+ * Image lodaing with Open CV 4.5.4 in to Torch Tensor.
+ * Torch tensor to CUDA memory data transfer.
+ * @version 0.1
+ * @date 2022-02-03
+ * @copyright Copyright (c) 2022
+ */
 #include <torch/script.h>
 #include <torch/torch.h>
 #include <memory>
@@ -54,6 +61,9 @@ make: *** [all] Error 2
 SOLVED 
 sometimes after delete all cache and cmake temp files use:
 sudo cmake -DCMAKE_PREFIX_PATH=/usr/local/lib . 
+# in local installation of Open CV 
+sudo cmake -DCMAKE_PREFIX_PATH=/home/alex/local/lib . 
+
 //---------------------------------------------------------------------
 
  # Time testing
