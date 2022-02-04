@@ -12,7 +12,8 @@ if(NOT DEFINED CMAKE_CUDA_ARCHITECTURES)
   set(CMAKE_CUDA_ARCHITECTURES 50)
 endif()
 
-set(OpenCV_DIR /home/alex/local/lib/cmake/opencv4)
+
+# SET("OpenCV_DIR" "/usr/opencv-2.4.10")
 
 # set(OpenCV_DIR /usr/local/lib)
 
@@ -30,9 +31,9 @@ message(STATUS "TORCH_LIBRARIES = ${TORCH_LIBRARIES}")
 
 # set(OpenCV_DIR /usr/local/lib/cmake/opencv4)
 # list(APPEND CMAKE_PREFIX_PATH  ./opencv4)
-
+set(OpenCV_DIR /home/alex/local)
 find_package(OpenCV REQUIRED)
-# include_directories( ${OpenCV_INCLUDE_DIRS} )
+include_directories("/home/alex/local/include/opencv4/opencv2/")
 message(STATUS "OpenCV_LIBS = ${OpenCV_LIBS}")
 
   
@@ -54,8 +55,8 @@ add_executable(loader_torch_init_step loader_torch_init_step.cpp)
 set_property(TARGET loader_torch_init_step 
              PROPERTY CUDA_SEPARABLE_COMPILATION ON)
 
-# target_link_libraries(loader_torch_init_step PRIVATE ${TORCH_LIBRARIES} ${OpenCV_LIBS})
-target_link_libraries(loader_torch_init_step PRIVATE ${TORCH_LIBRARIES})
+target_link_libraries(loader_torch_init_step PRIVATE ${TORCH_LIBRARIES} ${OpenCV_LIBS})
+# target_link_libraries(loader_torch_init_step PRIVATE ${TORCH_LIBRARIES} )
 
 # target_link_libraries(particle_cuda_test PRIVATE particles_new_lib)
 
