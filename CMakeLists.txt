@@ -12,7 +12,7 @@ if(NOT DEFINED CMAKE_CUDA_ARCHITECTURES)
   set(CMAKE_CUDA_ARCHITECTURES 50)
 endif()
 
-# set(OpenCV_DIR /home/alex/local/lib/cmake/opencv4)
+set(OpenCV_DIR /home/alex/local/lib/cmake/opencv4)
 
 # set(OpenCV_DIR /usr/local/lib)
 
@@ -31,9 +31,9 @@ message(STATUS "TORCH_LIBRARIES = ${TORCH_LIBRARIES}")
 # set(OpenCV_DIR /usr/local/lib/cmake/opencv4)
 # list(APPEND CMAKE_PREFIX_PATH  ./opencv4)
 
-# find_package(OpenCV REQUIRED)
+find_package(OpenCV REQUIRED)
 # include_directories( ${OpenCV_INCLUDE_DIRS} )
-# message(STATUS "OpenCV_LIBS = ${OpenCV_LIBS}")
+message(STATUS "OpenCV_LIBS = ${OpenCV_LIBS}")
 
   
 # Request that particles_new_lib be built with -std=c++11
@@ -48,8 +48,8 @@ message(STATUS "TORCH_LIBRARIES = ${TORCH_LIBRARIES}")
 #                        PROPERTIES CUDA_SEPARABLE_COMPILATION ON)
  
 # add_executable(loader_torch_init_step loader_torch_init_step.cpp)
-# add_executable(loader_torch_init_step loader_torch_init_step.cpp)
-add_executable(loader_torch_init_step loader_direct_cuda.cu)
+add_executable(loader_torch_init_step loader_torch_init_step.cpp)
+# add_executable(loader_torch_init_step loader_direct_cuda.cu)
 
 set_property(TARGET loader_torch_init_step 
              PROPERTY CUDA_SEPARABLE_COMPILATION ON)
