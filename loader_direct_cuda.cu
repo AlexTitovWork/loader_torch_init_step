@@ -23,10 +23,10 @@
 #define PATCH_WIDTH (400)
 #define PATCH_HEIGHT (400)
 //----------------------------
-#include <iostream>
-#include <opencv2/opencv.hpp>
-#include <opencv2/highgui.hpp>
-#include "opencv2/core.hpp"
+// #include <iostream>
+// #include <opencv2/opencv.hpp>
+// #include <opencv2/highgui.hpp>
+// #include "opencv2/core.hpp"
 #define LOG_FLAG false
 #define TIMERS_FLAG true
 //-----------------------
