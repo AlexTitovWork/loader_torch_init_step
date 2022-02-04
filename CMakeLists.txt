@@ -32,8 +32,10 @@ message(STATUS "TORCH_LIBRARIES = ${TORCH_LIBRARIES}")
 # set(OpenCV_DIR /usr/local/lib/cmake/opencv4)
 set(OpenCV_DIR /home/alex/local/lib/cmake/opencv4)
 # list(APPEND CMAKE_PREFIX_PATH  ./opencv4)
-set(OpenCV_DIR /home/alex/local)
-find_package(OpenCV REQUIRED)
+
+# set(OpenCV_DIR /home/alex/local)
+# find_package(OpenCV REQUIRED)
+find_package(OpenCV REQUIRED PATHS "/home/alex/local")
 include_directories("/home/alex/local/include/opencv4/opencv2/")
 message(STATUS "OpenCV_LIBS = ${OpenCV_LIBS}")
 
