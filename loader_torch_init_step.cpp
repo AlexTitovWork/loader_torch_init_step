@@ -26,13 +26,6 @@
 #include <opencv2/highgui.hpp>
 #include "opencv2/core.hpp"
 
-// #include <iostream>
-// #include <opencv4/opencv2/opencv.hpp>
-// #include <opencv4/opencv2/core.hpp>
-// #include <opencv4/opencv2/imgcodecs.hpp>
-// #include <opencv4/opencv2/highgui.hpp>
-// #include <opencv4/opencv2/core/cuda.hpp>
-
 #define LOG_FLAG false
 #define TIMERS_FLAG true
 using namespace std;
@@ -137,179 +130,187 @@ int main(int argc, const char *argv[]){
    * Module::to(at::ScalarType dtype, bool non_blocking)
    * Tested and worked.
    */
-  int height =400;
-  int width = 400;
-  torch::cuda::synchronize(-1);
-  torch::Tensor tensor_image = torch::zeros({1,height,width,3});
-  // torch::Tensor tensor_image = torch::rand({1,400,400,3});
-  tensor_image = tensor_image.pin_memory();
 
-  //-----------------------------------------------------------------------------
-  /**
-   * @brief    Approach 3. Pre-allocate and pin memory before of trancfering.
-   * Module::to(at::Device device, at::ScalarType dtype, bool non_blocking)
-   * Module::to(at::ScalarType dtype, bool non_blocking)
-   * Tested and worked.
-   */
-  // int height =400;
-  // int width = 400;
-  // std::vector<int64_t> dims = { 1, height, width, 3 };
-  // auto options = torch::TensorOptions().dtype(torch::kUInt8).device({ torch::kCUDA }).requires_grad(false);
-  // torch::Tensor tensor_image = torch::zeros(dims, options);
-
-  //--------------------------------------------------------------------------------
-
-  printf("Pre-load, \nMem allocation and pining.   Time taken: %.2fs\n\n", (double)(clock() - tPreLoad) / CLOCKS_PER_SEC);
-
-  if (LOG_FLAG){
-    printf("OpenCV: %s", cv::getBuildInformation().c_str());
-  }
-  
   torch::Device device = torch::kCPU;
   if (torch::cuda::is_available()){
     std::cout << "CUDA is available! Training on GPU." << std::endl;
     device = torch::kCUDA;
-  }
+    
 
-  if (LOG_FLAG){
-    std::cout << "PyTorch version: "
-              << TORCH_VERSION_MAJOR << "."
-              << TORCH_VERSION_MINOR << "."
-              << TORCH_VERSION_PATCH << std::endl;
-  }
+    if (LOG_FLAG){
+      std::cout << "PyTorch version: "
+                << TORCH_VERSION_MAJOR << "."
+                << TORCH_VERSION_MINOR << "."
+                << TORCH_VERSION_PATCH << std::endl;
+    }
 
-  clock_t tROIset = clock();
-  cv::Rect myROI(30, 10, 400, 400);
-  printf("ROI set.                   Time taken: %.2fs\n", (double)(clock() - tROIset) / CLOCKS_PER_SEC);
- 
-  clock_t tImgOneConversion = clock();
-  clock_t tLoadOpenCV = clock();
 
-  cv::Mat img = cv::imread(argv[1]); // 600x900
-  // cv::Mat croppedImage = cv::imread(argv[1]); // 600x900
 
-  if (TIMERS_FLAG){
-    printf("CV loader 1.          Time taken: %.2fs\n", (double)(clock() - tLoadOpenCV) / CLOCKS_PER_SEC);
-    // std::cout<<"tensor_image_style2 Loaded  and converted to Tensor. OK."<<std::endl;
-  }
+    // int height =400;
+    // int width = 400;
+    // // torch::cuda::synchronize(-1);
+    // torch::Tensor tensor_image = torch::zeros({1,height,width,3});
+    // // torch::Tensor tensor_image = torch::rand({1,400,400,3});
+    // tensor_image = tensor_image.pin_memory();
 
-  cv::Mat croppedImage = img(myROI);
-  cv::Mat input; 
-  cv::cvtColor(croppedImage, input, cv::COLOR_BGR2RGB);
-  //-------------------------------------------------------------------------
-  /**
-     * @brief Approach 1. Base approach, blob and data transfering here, witout preallocation 
-     * All time spended here. There are no preallocation and warming GPU. 
+    //-----------------------------------------------------------------------------
+    /**
+     * @brief    Approach 3. Pre-allocate and pin memory before of trancfering.
+     * Module::to(at::Device device, at::ScalarType dtype, bool non_blocking)
+     * Module::to(at::ScalarType dtype, bool non_blocking)
+     * Tested and worked.
      */
-    // torch::Tensor tensor_image = torch::from_blob(input.data, {1, input.rows, input.cols, 3}, torch::kByte);
-    // tensor_image = tensor_image.permute({0, 3, 1, 2});
-    // tensor_image = tensor_image.toType(torch::kFloat);
-    // tensor_image = tensor_image.div(255);
-    // tensor_image = tensor_image.to(torch::kCUDA);
-  //-------------------------------------------------------------------------
+    // int height =400;
+    // int width = 400;
+    // std::vector<int64_t> dims = { 1, height, width, 3 };
+    // auto options = torch::TensorOptions().dtype(torch::kUInt8).device({ torch::kCUDA }).requires_grad(false);
+    // torch::Tensor tensor_image = torch::zeros(dims, options);
 
-  clock_t tFitData = clock();
-  {
-    // bool non_blocking = true;
-    // torch::NoGradGuard no_grad;
-  //-------------------------------------------------------------------------
-  /**
-   * @brief    Approach 2. Pre-allocate and pin memory before of trancfering.
-   * Module::to(at::Device device, at::ScalarType dtype, bool non_blocking)
-   * Module::to(at::ScalarType dtype, bool non_blocking)
-   * Tested and worked.
-   * 
-   * Pin CPU memory, various form
-   * torch::Tensor tensor_pinned = at::empty(gpu.sizes(), device(at::kCPU).pinned_memory(true));
-   * torch::Tensor tensor_image = at::empty(gpu.sizes(), device(at::kCPU).pinned_memory(true));
-   * torch::Tensor tensor_pinned = torch::empty(tensor_image.sizes(), device(torch::kCPU).pin_memory(true));
-   * torch::Tensor tensor_image = torch::from_blob(input.data, {1, input.rows, input.cols, 3}, torch::kByte );
-   * torch::Tensor tensor_image = torch::from_blob(input.data, {1, input.rows, input.cols, 3}, torch::kByte).pin_memory(torch::kCPU);
-   */
+    //--------------------------------------------------------------------------------
+
+    printf("Pre-load, \nMem allocation and pining.   Time taken: %.2fs\n\n", (double)(clock() - tPreLoad) / CLOCKS_PER_SEC);
+
+    if (LOG_FLAG){
+      printf("OpenCV: %s", cv::getBuildInformation().c_str());
+    }
+    
+    clock_t tROIset = clock();
+    cv::Rect myROI(30, 10, 400, 400);
+    printf("ROI set.                   Time taken: %.2fs\n", (double)(clock() - tROIset) / CLOCKS_PER_SEC);
   
-  torch::cuda::synchronize(-1);
-  tensor_image = torch::from_blob(input.data, {1, input.rows, input.cols, 3}, torch::kByte );
-  tensor_image = tensor_image.permute({0, 3, 1, 2});
-  tensor_image = tensor_image.toType(torch::kFloat);
-  tensor_image = tensor_image.div(255);
+    clock_t tImgOneConversion = clock();
+    clock_t tLoadOpenCV = clock();
+
+    cv::Mat img = cv::imread(argv[1]); // 600x900
+    // cv::Mat croppedImage = cv::imread(argv[1]); // 600x900
 
     if (TIMERS_FLAG){
-      printf("Fit data in to memory. Time taken: %.2fs\n", (double)(clock() - tFitData) / CLOCKS_PER_SEC);
+      printf("CV loader 1.          Time taken: %.2fs\n", (double)(clock() - tLoadOpenCV) / CLOCKS_PER_SEC);
       // std::cout<<"tensor_image_style2 Loaded  and converted to Tensor. OK."<<std::endl;
     }
 
-  //-------------------------------------------------------------------------
-      clock_t tTransferData = clock();
-  /**
-     * @brief Approach 3. CUDA Asynch approach, data transfering here in prepinned and preallocated memory.
-     * Data transfer directly cuda copy, without using BLOB data
-     * Worked but with similar perfomance as BLOB Approach 3.
-     *  
-     * Manual for CUDA asynch copy
-     * cudaMemcpy2DAsync(
-     * dst: *mut c_void, 
-     * dpitch: usize, 
-     * src: *const c_void, 
-     * spitch: usize, 
-     * width: usize, 
-     * height: usize, 
-     * kind: cudaMemcpyKind, 
-     * stream: *mut CUstream_st)
-     */
-     
-    // 
-    // auto data = tensor_image.data_ptr<uint8_t>() ;
-    // auto pitch = width * sizeof(uint8_t) * 3;
-    // // uint8_t* data = new uint8_t[PATCH_HEIGHT * PATCH_WIDTH * 3];
-    // auto stream = at::cuda::getStreamFromPool(true, 0);
-    // cudaMemcpy2DAsync(data,
-    //     pitch,
-    //     input.data,
-    //     pitch,
-    //     pitch,
-    //     height,
-    //     cudaMemcpyHostToDevice,
-    //     stream.stream());
-
-  	// cudaStreamSynchronize(stream.stream());
-
-    // tensor_image = tensor_image.permute({0, 3, 1, 2});
-    // tensor_image = tensor_image.toType(torch::kFloat);
-    // tensor_image = tensor_image.div(255);
+    cv::Mat croppedImage = img(myROI);
+    cv::Mat input; 
+    cv::cvtColor(croppedImage, input, cv::COLOR_BGR2RGB);
     //-------------------------------------------------------------------------
     /**
-     * @brief 
-     * void Module::to(at::Device device, at::ScalarType dtype, bool non_blocking)
-     */
-    torch::cuda::synchronize(-1);
-    tensor_image = tensor_image.to(torch::kCUDA);
-
-
-    height = tensor_image.size(0);
-    width = tensor_image.size(1);
-    int depth = tensor_image.size(2);
-    
-    std::cout<<   "tensor_image Tensor size:"<<std::endl;
-    std::cout<<   height << "x"<< width <<"x"<<depth <<std::endl;
-    // tensor_image = tensor_image.to(torch::kCUDA, torch::kFloat, non_blocking);
+       * @brief Approach 1. Base approach, blob and data transfering here, witout preallocation 
+       * All time spended here. There are no preallocation and warming GPU. 
+       */
+      // torch::Tensor tensor_image = torch::from_blob(input.data, {1, input.rows, input.cols, 3}, torch::kByte);
+      // tensor_image = tensor_image.permute({0, 3, 1, 2});
+      // tensor_image = tensor_image.toType(torch::kFloat);
+      // tensor_image = tensor_image.div(255);
+      // tensor_image = tensor_image.to(torch::kCUDA);
     //-------------------------------------------------------------------------
-    // Check Tensor in CUDA memory
-    if (TIMERS_FLAG){
-      printf("CPU - GPU transfer/reassign. Time taken: %.2fs\n\n", (double)(clock() - tTransferData) / CLOCKS_PER_SEC);
-    }
+
+    clock_t tFitData = clock();
+    {
+      // bool non_blocking = true;
+      // torch::NoGradGuard no_grad;
+    //-------------------------------------------------------------------------
+    /**
+     * @brief    Approach 2. Pre-allocate and pin memory before of trancfering.
+     * Module::to(at::Device device, at::ScalarType dtype, bool non_blocking)
+     * Module::to(at::ScalarType dtype, bool non_blocking)
+     * Tested and worked.
+     * 
+     * Pin CPU memory, various form
+     * torch::Tensor tensor_pinned = at::empty(gpu.sizes(), device(at::kCPU).pinned_memory(true));
+     * torch::Tensor tensor_image = at::empty(gpu.sizes(), device(at::kCPU).pinned_memory(true));
+     * torch::Tensor tensor_pinned = torch::empty(tensor_image.sizes(), device(torch::kCPU).pin_memory(true));
+     * torch::Tensor tensor_image = torch::from_blob(input.data, {1, input.rows, input.cols, 3}, torch::kByte );
+     * torch::Tensor tensor_image = torch::from_blob(input.data, {1, input.rows, input.cols, 3}, torch::kByte).pin_memory(torch::kCPU);
+     */
     
-    // std::cout<<tensor_image<<std::endl;
+    torch::cuda::synchronize(-1);
+    // tensor_image = torch::from_blob(input.data, {1, input.rows, input.cols, 3}, torch::kByte );
+    torch::Tensor tensor_image = torch::from_blob(input.data, {1, input.rows, input.cols, 3}, torch::kByte );
+
+    tensor_image = tensor_image.permute({0, 3, 1, 2});
+    tensor_image = tensor_image.toType(torch::kFloat);
+    tensor_image = tensor_image.div(255);
+
+      if (TIMERS_FLAG){
+        printf("Fit data in to memory. Time taken: %.2fs\n", (double)(clock() - tFitData) / CLOCKS_PER_SEC);
+        // std::cout<<"tensor_image_style2 Loaded  and converted to Tensor. OK."<<std::endl;
+      }
+
+    //-------------------------------------------------------------------------
+        clock_t tTransferData = clock();
+    /**
+       * @brief Approach 3. CUDA Asynch approach, data transfering here in prepinned and preallocated memory.
+       * Data transfer directly cuda copy, without using BLOB data
+       * Worked but with similar perfomance as BLOB Approach 3.
+       *  
+       * Manual for CUDA asynch copy
+       * cudaMemcpy2DAsync(
+       * dst: *mut c_void, 
+       * dpitch: usize, 
+       * src: *const c_void, 
+       * spitch: usize, 
+       * width: usize, 
+       * height: usize, 
+       * kind: cudaMemcpyKind, 
+       * stream: *mut CUstream_st)
+       */
+      
+      // 
+      // auto data = tensor_image.data_ptr<uint8_t>() ;
+      // auto pitch = width * sizeof(uint8_t) * 3;
+      // // uint8_t* data = new uint8_t[PATCH_HEIGHT * PATCH_WIDTH * 3];
+      // auto stream = at::cuda::getStreamFromPool(true, 0);
+      // cudaMemcpy2DAsync(data,
+      //     pitch,
+      //     input.data,
+      //     pitch,
+      //     pitch,
+      //     height,
+      //     cudaMemcpyHostToDevice,
+      //     stream.stream());
+
+      // cudaStreamSynchronize(stream.stream());
+
+      // tensor_image = tensor_image.permute({0, 3, 1, 2});
+      // tensor_image = tensor_image.toType(torch::kFloat);
+      // tensor_image = tensor_image.div(255);
+      //-------------------------------------------------------------------------
+      /**
+       * @brief 
+       * void Module::to(at::Device device, at::ScalarType dtype, bool non_blocking)
+       */
+      torch::cuda::synchronize(-1);
+      
+      // tensor_image = tensor_image.to(torch::kCUDA);
+      tensor_image = tensor_image.to(device);
 
 
+      height = tensor_image.size(0);
+      width = tensor_image.size(1);
+      int depth = tensor_image.size(2);
+      
+      std::cout<<   "tensor_image Tensor size:"<<std::endl;
+      std::cout<<   height << "x"<< width <<"x"<<depth <<std::endl;
+      // tensor_image = tensor_image.to(torch::kCUDA, torch::kFloat, non_blocking);
+      //-------------------------------------------------------------------------
+      // Check Tensor in CUDA memory
+      if (TIMERS_FLAG){
+        printf("CPU - GPU transfer/reassign. Time taken: %.2fs\n\n", (double)(clock() - tTransferData) / CLOCKS_PER_SEC);
+      }
+      
+      // std::cout<<tensor_image<<std::endl;
+
+
+    }
+
+    if (LOG_FLAG)
+      std::cout << "Loaded ok." << std::endl;
+
+    if (TIMERS_FLAG){
+      printf("Processing. Time taken: %.2fs\n", (double)(clock() - tImgOneConversion) / CLOCKS_PER_SEC);
+    }
+
+    
+    std::cout << "ok!\n";
   }
-
-  if (LOG_FLAG)
-    std::cout << "Loaded ok." << std::endl;
-
-  if (TIMERS_FLAG){
-    printf("Processing. Time taken: %.2fs\n", (double)(clock() - tImgOneConversion) / CLOCKS_PER_SEC);
-  }
-
-  
-  std::cout << "ok!\n";
 }
