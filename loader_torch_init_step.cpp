@@ -223,7 +223,7 @@ int main(int argc, const char *argv[]){
      * torch::Tensor tensor_image = torch::from_blob(input.data, {1, input.rows, input.cols, 3}, torch::kByte).pin_memory(torch::kCPU);
      */
     
-    torch::cuda::synchronize(-1);
+    // torch::cuda::synchronize(-1);
     // tensor_image = torch::from_blob(input.data, {1, input.rows, input.cols, 3}, torch::kByte );
     torch::Tensor tensor_image = torch::from_blob(input.data, {1, input.rows, input.cols, 3}, torch::kByte );
 
@@ -237,7 +237,9 @@ int main(int argc, const char *argv[]){
       }
 
     //-------------------------------------------------------------------------
-        clock_t tTransferData = clock();
+    clock_t tTransferData = clock();
+    torch::cuda::synchronize()
+
     /**
        * @brief Approach 3. CUDA Asynch approach, data transfering here in prepinned and preallocated memory.
        * Data transfer directly cuda copy, without using BLOB data
@@ -279,10 +281,10 @@ int main(int argc, const char *argv[]){
        * @brief 
        * void Module::to(at::Device device, at::ScalarType dtype, bool non_blocking)
        */
-      torch::cuda::synchronize(-1);
-      
+      // torch::cuda::synchronize(-1);
       // tensor_image = tensor_image.to(torch::kCUDA);
       tensor_image = tensor_image.to(device);
+      torch::cuda::synchronize()
 
 
       height = tensor_image.size(0);
@@ -295,6 +297,7 @@ int main(int argc, const char *argv[]){
       //-------------------------------------------------------------------------
       // Check Tensor in CUDA memory
       if (TIMERS_FLAG){
+
         printf("CPU - GPU transfer/reassign. Time taken: %.2fs\n\n", (double)(clock() - tTransferData) / CLOCKS_PER_SEC);
       }
       
