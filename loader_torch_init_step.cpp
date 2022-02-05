@@ -135,7 +135,7 @@ int main(int argc, const char *argv[]){
   if (torch::cuda::is_available()){
     std::cout << "CUDA is available! Training on GPU." << std::endl;
     device = torch::kCUDA;
-    torch::backends::cudnn::enabled = false;
+    torch::backend::cudnn::enabled = false;
 
     if (LOG_FLAG){
       std::cout << "PyTorch version: "
