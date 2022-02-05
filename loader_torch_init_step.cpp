@@ -284,7 +284,6 @@ int main(int argc, const char *argv[]){
       // torch::cuda::synchronize(-1);
       // tensor_image = tensor_image.to(torch::kCUDA);
       tensor_image = tensor_image.to(device);
-      torch::cuda::synchronize()
 
 
       height = tensor_image.size(0);
@@ -296,6 +295,8 @@ int main(int argc, const char *argv[]){
       // tensor_image = tensor_image.to(torch::kCUDA, torch::kFloat, non_blocking);
       //-------------------------------------------------------------------------
       // Check Tensor in CUDA memory
+      torch::cuda::synchronize()
+
       if (TIMERS_FLAG){
 
         printf("CPU - GPU transfer/reassign. Time taken: %.2fs\n\n", (double)(clock() - tTransferData) / CLOCKS_PER_SEC);
