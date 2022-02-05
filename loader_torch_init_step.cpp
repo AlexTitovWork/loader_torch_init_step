@@ -238,7 +238,7 @@ int main(int argc, const char *argv[]){
 
     //-------------------------------------------------------------------------
     clock_t tTransferData = clock();
-    torch::cuda::synchronize()
+    torch::cuda::synchronize();
 
     /**
        * @brief Approach 3. CUDA Asynch approach, data transfering here in prepinned and preallocated memory.
@@ -295,7 +295,7 @@ int main(int argc, const char *argv[]){
       // tensor_image = tensor_image.to(torch::kCUDA, torch::kFloat, non_blocking);
       //-------------------------------------------------------------------------
       // Check Tensor in CUDA memory
-      torch::cuda::synchronize()
+      torch::cuda::synchronize();
 
       if (TIMERS_FLAG){
 
