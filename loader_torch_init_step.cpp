@@ -149,9 +149,9 @@ int main(int argc, const char *argv[]){
     int height =400;
     int width = 400;
     // // torch::cuda::synchronize(-1);
-    // torch::Tensor tensor_image = torch::zeros({1,height,width,3});
+    torch::Tensor tensor_image = torch::zeros({1,height,width,3});
     // // torch::Tensor tensor_image = torch::rand({1,400,400,3});
-    // tensor_image = tensor_image.pin_memory();
+    tensor_image = tensor_image.pin_memory();
 
     //-----------------------------------------------------------------------------
     /**
