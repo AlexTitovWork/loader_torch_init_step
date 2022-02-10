@@ -16,6 +16,7 @@ endif()
 # SET("OpenCV_DIR" "/usr/opencv-2.4.10")
 
 # set(OpenCV_DIR /usr/local/lib)
+set(OpenCV_DIR /home/alex/local/lib/cmake/opencv4)
 
 
 project(cmake_and_cuda LANGUAGES CXX CUDA)
@@ -34,9 +35,10 @@ set(OpenCV_DIR /home/alex/local/lib/cmake/opencv4)
 # list(APPEND CMAKE_PREFIX_PATH  ./opencv4)
 
 # set(OpenCV_DIR /home/alex/local)
-# find_package(OpenCV REQUIRED)
-find_package(OpenCV REQUIRED PATHS="/home/alex/local")
-include_directories("/home/alex/local/include/opencv4")
+find_package(OpenCV REQUIRED)
+# find_package(OpenCV REQUIRED PATHS="/home/alex/local")
+# include_directories("/home/alex/local/include/opencv4")
+include_directories( ${OpenCV_INCLUDE_DIRS} )
 message(STATUS "OpenCV_LIBS = ${OpenCV_LIBS}")
 
   
