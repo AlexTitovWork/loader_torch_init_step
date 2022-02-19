@@ -224,8 +224,8 @@ int main(int argc, const char *argv[]){
      */
     
     // torch::cuda::synchronize(-1);
-    // tensor_image = torch::from_blob(input.data, {1, input.rows, input.cols, 3}, torch::kByte );
-    torch::Tensor tensor_image = torch::from_blob(input.data, {1, input.rows, input.cols, 3}, torch::kByte );
+    tensor_image = torch::from_blob(input.data, {1, input.rows, input.cols, 3}, torch::kByte );
+    // torch::Tensor tensor_image = torch::from_blob(input.data, {1, input.rows, input.cols, 3}, torch::kByte );
 
     tensor_image = tensor_image.permute({0, 3, 1, 2});
     tensor_image = tensor_image.toType(torch::kFloat);
