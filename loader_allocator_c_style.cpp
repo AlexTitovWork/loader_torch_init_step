@@ -126,6 +126,7 @@ Sun Jan 16 14:58:54 2022
 int main(int argc, const char *argv[]){
   clock_t tTotal = clock();
   clock_t tPreLoad = clock();
+
   //-----------------------------------------------------------------------------
   /**
    * @brief    Approach 2. Pre-allocate and pin memory before of trancfering.
@@ -147,6 +148,7 @@ int main(int argc, const char *argv[]){
                 << TORCH_VERSION_PATCH << std::endl;
     }
 
+    printf("Device select     Time taken: %.2fs\n", (double)(clock() - tPreLoad) / CLOCKS_PER_SEC);
 
     /**
      * Paly with allocators
@@ -170,7 +172,7 @@ int main(int argc, const char *argv[]){
 
     auto tensorCreated = torch::from_blob(tensorDataPtr, { rows,colums,channels }, c10::TensorOptions().dtype(torch::kFloat32))/*.to(torch::kCUDA)*/;
     
-    printf("CPU allocator            Time taken: %.2fs\n", (double)(clock() - tCPU_Tensor_alloc) / CLOCKS_PER_SEC);
+    printf("CPU Tensor init from host      Time taken: %.2fs\n", (double)(clock() - tCPU_Tensor_alloc) / CLOCKS_PER_SEC);
 
     std::cout<<   "tensorCreated Tensor size:"<<std::endl;
     std::cout<< /*tensorCreated << */" " + to_string(rows) + " " + to_string(colums) + " " + to_string(channels) + " "<<std::endl;  
@@ -205,7 +207,14 @@ int main(int argc, const char *argv[]){
      * 
      */
     // torch::Tensor tensor_image = torch::rand({1,400,400,3});
+    clock_t tAllocTensor = clock();
+
     torch::Tensor tensor_image = torch::zeros({1,height,width,3});
+
+
+    printf("Tensor zeros alloc on CPU \nMem allocation   Time taken: %.2fs\n\n", (double)(clock() - tAllocTensor) / CLOCKS_PER_SEC);
+    clock_t tPin = clock();
+
     tensor_image = tensor_image.pin_memory();
 
     //-----------------------------------------------------------------------------
@@ -223,7 +232,7 @@ int main(int argc, const char *argv[]){
 
     //--------------------------------------------------------------------------------
 
-    printf("Pre-load, \nMem allocation and pining.   Time taken: %.2fs\n\n", (double)(clock() - tPreLoad) / CLOCKS_PER_SEC);
+    printf("Mem pining.   Time taken: %.2fs\n\n", (double)(clock() - tPin) / CLOCKS_PER_SEC);
 
     if (LOG_FLAG){
       printf("OpenCV: %s", cv::getBuildInformation().c_str());
