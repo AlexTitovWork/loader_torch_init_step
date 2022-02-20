@@ -172,6 +172,9 @@ int main(int argc, const char *argv[]){
 
     float * tensorDataPtr = new float[rows*colums*channels];
     auto tensorCreated = torch::from_blob(tensorDataPtr, { rows,colums,channels }, c10::TensorOptions().dtype(torch::kFloat32))/*.to(torch::kCUDA)*/;
+
+    std::cout<< tensorCreated << " " + to_string(rows) + " " + to_string(colums) + " " + to_string(channels) + " "<<std::endl;   
+
     tensorCreated = tensorCreated.to(device);
 
     std::cout<<   "tensorCreated Tensor size:"<<std::endl;
