@@ -172,8 +172,12 @@ int main(int argc, const char *argv[]){
     int gpu_id = 0;
   	auto device = torch::Device(torch::kCUDA, gpu_id);
     float * tensorDataPtr = new float[rows*colums*channels];
-    auto tensorCreated = torch::from_blob(tensorDataPtr, { rows,colums,channels }, c10::TensorOptions().dtype(torch::kFloat32))/*.to(torch::kCUDA)*/;
-    tensorCreated = tensorCreated.to(device);
+
+    c10::TensorOptions options = torch::TensorOptions().dtype(torch::kFloat32).device(torch::kCUDA, 0);
+    auto tensorCreated = torch::from_blob(tensorDataPtr, { rows,colums,channels }, options)/*.to(torch::kCUDA)*/;
+
+    // auto tensorCreated = torch::from_blob(tensorDataPtr, { rows,colums,channels }, c10::TensorOptions().dtype(torch::kFloat32))/*.to(torch::kCUDA)*/;
+    // tensorCreated = tensorCreated.to(device);
 
 
     /*
