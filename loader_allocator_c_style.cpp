@@ -157,8 +157,8 @@ int main(int argc, const char *argv[]){
     // cudaEvent_t start, stop; 
     // cudaEventCreate(&start);
     // cudaEventCreate(&stop);
-    int rows = 10;
-    int colums = 10;
+    int rows = 10000;
+    int colums = 10000;
     int channels = 3;
     clock_t tCPU_alloc = clock();
 
@@ -173,7 +173,7 @@ int main(int argc, const char *argv[]){
     printf("CPU allocator            Time taken: %.2fs\n", (double)(clock() - tCPU_Tensor_alloc) / CLOCKS_PER_SEC);
 
     std::cout<<   "tensorCreated Tensor size:"<<std::endl;
-    std::cout<< tensorCreated << " " + to_string(rows) + " " + to_string(colums) + " " + to_string(channels) + " "<<std::endl;  
+    std::cout<< /*tensorCreated << */" " + to_string(rows) + " " + to_string(colums) + " " + to_string(channels) + " "<<std::endl;  
 
 
     // tensorCreated = tensorCreated.to(device);
