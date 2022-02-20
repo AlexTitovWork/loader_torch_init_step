@@ -153,33 +153,31 @@ int main(int argc, const char *argv[]){
      * GPU MEMORY			       : 0.7 GB
      * DEDICATED GPU MEMORY  : 0.6 GB
     */
-    clock_t tCUDAalloc = clock();
-
+    
     // cudaEvent_t start, stop; 
     // cudaEventCreate(&start);
     // cudaEventCreate(&stop);
     int rows = 10;
     int colums = 10;
     int channels = 3;
-    // cudaEventRecord(start);
-    // double * tensorDataPtr = new float[rows*colums*channels];    
-    // auto options = torch::TensorOptions().dtype(torch::kFloat64).device(torch::kCUDA, 0);
-    
-    // torch::Tensor tensorCreated = torch::from_blob(tensorDataPtr, { rows,colums,channels }, options)/*.to(torch::kCUDA)*/;
-    // auto tensorCreated = torch::from_blob(tensorDataPtr, { rows,colums,channels }, options)/*.to(torch::kCUDA)*/;
-
-
+    clock_t tCPU_alloc = clock();
 
     float * tensorDataPtr = new float[rows*colums*channels];
-    // auto tensorCreated = torch::from_blob(tensorDataPtr, { rows,colums,channels }, c10::TensorOptions().dtype(torch::kFloat32))/*.to(torch::kCUDA)*/;
-    auto tensorCreated = torch::from_blob(tensorDataPtr, { rows,colums,channels }, c10::TensorOptions().dtype(torch::kCUDA))/*.to(torch::kCUDA)*/;
+    
+    printf("CPU allocator            Time taken: %.2fs\n", (double)(clock() - tCPU_alloc) / CLOCKS_PER_SEC);
 
-    std::cout<< tensorCreated << " " + to_string(rows) + " " + to_string(colums) + " " + to_string(channels) + " "<<std::endl;   
+    clock_t tCPU_Tensor_alloc = clock();
 
-    tensorCreated = tensorCreated.to(device);
+    auto tensorCreated = torch::from_blob(tensorDataPtr, { rows,colums,channels }, c10::TensorOptions().dtype(torch::kFloat32))/*.to(torch::kCUDA)*/;
+    
+    printf("CPU allocator            Time taken: %.2fs\n", (double)(clock() - tCPU_Tensor_alloc) / CLOCKS_PER_SEC);
 
     std::cout<<   "tensorCreated Tensor size:"<<std::endl;
-    std::cout<< tensorCreated << " " + to_string(rows) + " " + to_string(colums) + " " + to_string(channels) + " "<<std::endl;   
+    std::cout<< tensorCreated << " " + to_string(rows) + " " + to_string(colums) + " " + to_string(channels) + " "<<std::endl;  
+
+
+    // tensorCreated = tensorCreated.to(device);
+    // std::cout<< tensorCreated << " " + to_string(rows) + " " + to_string(colums) + " " + to_string(channels) + " "<<std::endl;   
     
 
     /*
@@ -192,7 +190,6 @@ int main(int argc, const char *argv[]){
     // float milliseconds = 0;
     // cudaEventElapsedTime(&milliseconds, start, stop);
     // printf("Elapsed time : %.2f ms\n" ,milliseconds);
-    printf("CUDA allocator            Time taken: %.2fs\n", (double)(clock() - tCUDAalloc) / CLOCKS_PER_SEC);
 
     //-------------------------------------------------------
     int height =400;
