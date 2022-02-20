@@ -163,7 +163,7 @@ int main(int argc, const char *argv[]){
     int channels = 3;
     // cudaEventRecord(start);
     float * tensorDataPtr = new float[rows*colums*channels];
-    auto options = torch::TensorOptions().dtype(torch::kFloat64).device(torch::kCUDA, 1);
+    auto options = torch::TensorOptions().dtype(torch::kFloat64).device(torch::kCUDA, 0);
     torch::Tensor tensorCreated = torch::from_blob(tensorDataPtr, { rows,colums,channels }, options)/*.to(torch::kCUDA)*/;
     // auto tensorCreated = torch::from_blob(tensorDataPtr, { rows,colums,channels }, options)/*.to(torch::kCUDA)*/;
 
