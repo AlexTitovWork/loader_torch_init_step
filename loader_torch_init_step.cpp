@@ -13,6 +13,8 @@
 #include <memory>
 #include <time.h>
 //----------------------------
+#include <cuda.h>
+#include "cuda_runtime.h"
 //async transfer
 // #include <c10/cuda/CUDAStream.h>
 // #include <c10/cuda/CUDAGuard.h>
