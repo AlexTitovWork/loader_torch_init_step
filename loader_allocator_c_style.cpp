@@ -28,7 +28,7 @@
 #include <opencv2/opencv.hpp>
 #include <opencv2/highgui.hpp>
 #include "opencv2/core.hpp"
-#include <string.h>
+
 #define LOG_FLAG false
 #define TIMERS_FLAG true
 using namespace std;
@@ -169,18 +169,14 @@ int main(int argc, const char *argv[]){
     // auto tensorCreated = torch::from_blob(tensorDataPtr, { rows,colums,channels }, options)/*.to(torch::kCUDA)*/;
 
 
-    int gpu_id = 0;
-  	auto device = torch::Device(torch::kCUDA, gpu_id);
-    float * tensorDataPtr = new float[rows*colums*channels];
 
-    c10::TensorOptions options = torch::TensorOptions().dtype(torch::kFloat32).device(torch::kCUDA, 0);
-    auto tensorCreated = torch::from_blob(tensorDataPtr, { rows,colums,channels }, options)/*.to(torch::kCUDA)*/;
+    float * tensorDataPtr = new float[rows*colums*channels];
+    auto tensorCreated = torch::from_blob(tensorDataPtr, { rows,colums,channels }, c10::TensorOptions().dtype(torch::kFloat32))/*.to(torch::kCUDA)*/;
+    tensorCreated = tensorCreated.to(device);
+
     std::cout<<   "tensorCreated Tensor size:"<<std::endl;
     std::cout<< tensorCreated << " " + to_string(rows) + " " + to_string(colums) + " " + to_string(channels) + " "<<std::endl;   
     
-    // auto tensorCreated = torch::from_blob(tensorDataPtr, { rows,colums,channels }, c10::TensorOptions().dtype(torch::kFloat32))/*.to(torch::kCUDA)*/;
-    // tensorCreated = tensorCreated.to(device);
-
 
     /*
     auto tensorCreated = torch::from_blob(tensorDataPtr, { rows,colums,channels }, c10::TensorOptions().dtype(torch::kFloat32));
