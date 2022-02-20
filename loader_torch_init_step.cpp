@@ -145,12 +145,45 @@ int main(int argc, const char *argv[]){
     }
 
 
+    /**
+     * Paly with allocators
+     * GPU MEMORY			       : 0.7 GB
+     * DEDICATED GPU MEMORY  : 0.6 GB
+    */
+    clock_t tCUDAalloc = clock();
 
+    cudaEvent_t start, stop; 
+    cudaEventCreate(&start);
+    cudaEventCreate(&stop);
+    int rows = 10000;
+    int colums = 10000;
+    int channels = 3;
+    cudaEventRecord(start);
+    float * tensorDataPtr = new float[rows*colums*channels];
+    auto tensorCreated = torch::from_blob(tensorDataPtr, { rows,colums,channels }, c10::TensorOptions().dtype(torch::kFloat32))/*.to(torch::kCUDA)*/;
+    tensorCreated = tensorCreated.to(device);
+
+    cudaEventRecord(stop);
+    cudaEventSynchronize(stop);
+    float milliseconds = 0;
+    cudaEventElapsedTime(&milliseconds, start, stop);
+    printf("Elapsed time : %.2f ms\n" ,milliseconds);
+    printf("CUDA allocator            Time taken: %.2fs\n", (double)(clock() - tCUDAalloc) / CLOCKS_PER_SEC);
+
+    //-------------------------------------------------------
     int height =400;
     int width = 400;
     // // torch::cuda::synchronize(-1);
+    /**
+     * @brief directly CUDA memory allocation using device tag
+     * 
+     */
     torch::Tensor tensor_image = torch::zeros({1,height,width,3}, device);
-    // // torch::Tensor tensor_image = torch::rand({1,400,400,3});
+    /**
+     * @brief Allocation into HOST and pin it. Than redefine this memory for GPU
+     * 
+     */
+    // torch::Tensor tensor_image = torch::rand({1,400,400,3});
     // tensor_image = tensor_image.pin_memory();
 
     //-----------------------------------------------------------------------------
