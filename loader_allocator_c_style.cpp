@@ -162,15 +162,22 @@ int main(int argc, const char *argv[]){
     int colums = 10000;
     int channels = 3;
     // cudaEventRecord(start);
-    float * tensorDataPtr = new float[rows*colums*channels];
+    // double * tensorDataPtr = new float[rows*colums*channels];    
     // auto options = torch::TensorOptions().dtype(torch::kFloat64).device(torch::kCUDA, 0);
+    
     // torch::Tensor tensorCreated = torch::from_blob(tensorDataPtr, { rows,colums,channels }, options)/*.to(torch::kCUDA)*/;
     // auto tensorCreated = torch::from_blob(tensorDataPtr, { rows,colums,channels }, options)/*.to(torch::kCUDA)*/;
 
-    
+
+    double array[] = { 1, 2, 3, 4, 5};
+    auto options = torch::TensorOptions().dtype(torch::kFloat64).device(torch::kCUDA, 1);
+    torch::Tensor tharray = torch::from_blob(array, {5}, options);
+
+
+    /*
     auto tensorCreated = torch::from_blob(tensorDataPtr, { rows,colums,channels }, c10::TensorOptions().dtype(torch::kFloat32));
     tensorCreated = tensorCreated.to(device);
-    
+    */  
 
     // cudaEventRecord(stop);
     // cudaEventSynchronize(stop);
