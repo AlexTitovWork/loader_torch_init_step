@@ -170,7 +170,7 @@ int main(int argc, const char *argv[]){
 
 
     double array[] = { 1, 2, 3, 4, 5};
-    auto options = torch::TensorOptions().dtype(torch::kFloat64).device(torch::kCUDA, 1);
+    auto options = torch::TensorOptions().dtype(torch::kFloat64).device(torch::kCUDA, 0);
     torch::Tensor tharray = torch::from_blob(array, {5}, options);
 
 
