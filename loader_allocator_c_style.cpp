@@ -13,8 +13,9 @@
 #include <memory>
 #include <time.h>
 //----------------------------
-#include <cuda.h>
-#include <cuda_runtime.h>
+// For *.cu files
+// #include <cuda.h>
+// #include <cuda_runtime.h>
 //async transfer
 // #include <c10/cuda/CUDAStream.h>
 // #include <c10/cuda/CUDAGuard.h>
@@ -154,22 +155,28 @@ int main(int argc, const char *argv[]){
     */
     clock_t tCUDAalloc = clock();
 
-    cudaEvent_t start, stop; 
-    cudaEventCreate(&start);
-    cudaEventCreate(&stop);
+    // cudaEvent_t start, stop; 
+    // cudaEventCreate(&start);
+    // cudaEventCreate(&stop);
     int rows = 10000;
     int colums = 10000;
     int channels = 3;
-    cudaEventRecord(start);
+    // cudaEventRecord(start);
     float * tensorDataPtr = new float[rows*colums*channels];
-    auto tensorCreated = torch::from_blob(tensorDataPtr, { rows,colums,channels }, c10::TensorOptions().dtype(torch::kFloat32))/*.to(torch::kCUDA)*/;
-    tensorCreated = tensorCreated.to(device);
+    auto options = torch::TensorOptions().dtype(torch::kFloat64).device(torch::kCUDA, 1);
+    torch::Tensor tensorCreated = torch::from_blob(tensorDataPtr, { rows,colums,channels }, options)/*.to(torch::kCUDA)*/;
+    // auto tensorCreated = torch::from_blob(tensorDataPtr, { rows,colums,channels }, options)/*.to(torch::kCUDA)*/;
 
-    cudaEventRecord(stop);
-    cudaEventSynchronize(stop);
-    float milliseconds = 0;
-    cudaEventElapsedTime(&milliseconds, start, stop);
-    printf("Elapsed time : %.2f ms\n" ,milliseconds);
+    /*
+     *  auto tensorCreated = torch::from_blob(tensorDataPtr, { rows,colums,channels }, c10::TensorOptions().dtype(torch::kFloat32));
+     *  tensorCreated = tensorCreated.to(device);
+     */
+
+    // cudaEventRecord(stop);
+    // cudaEventSynchronize(stop);
+    // float milliseconds = 0;
+    // cudaEventElapsedTime(&milliseconds, start, stop);
+    // printf("Elapsed time : %.2f ms\n" ,milliseconds);
     printf("CUDA allocator            Time taken: %.2fs\n", (double)(clock() - tCUDAalloc) / CLOCKS_PER_SEC);
 
     //-------------------------------------------------------

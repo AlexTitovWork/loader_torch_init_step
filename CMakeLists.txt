@@ -56,7 +56,7 @@ message(STATUS "OpenCV_LIBS = ${OpenCV_LIBS}")
 # add_executable(loader_torch_init_step loader_torch_init_step.cpp)
 # add_executable(loader_torch_init_step loader_torch_init_step.cpp)
 # add_executable(loader_torch_init_step loader_direct_cuda.cu)
-add_executable(loader_torch_init_step loader_allocator_c_style.cu)
+add_executable(loader_torch_init_step loader_allocator_c_style.cpp)
 
 set_property(TARGET loader_torch_init_step 
              PROPERTY CUDA_SEPARABLE_COMPILATION ON)
