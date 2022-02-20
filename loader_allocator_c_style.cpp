@@ -158,8 +158,8 @@ int main(int argc, const char *argv[]){
     // cudaEvent_t start, stop; 
     // cudaEventCreate(&start);
     // cudaEventCreate(&stop);
-    int rows = 10000;
-    int colums = 10000;
+    int rows = 10;
+    int colums = 10;
     int channels = 3;
     // cudaEventRecord(start);
     // double * tensorDataPtr = new float[rows*colums*channels];    
@@ -175,7 +175,9 @@ int main(int argc, const char *argv[]){
 
     c10::TensorOptions options = torch::TensorOptions().dtype(torch::kFloat32).device(torch::kCUDA, 0);
     auto tensorCreated = torch::from_blob(tensorDataPtr, { rows,colums,channels }, options)/*.to(torch::kCUDA)*/;
-
+    std::cout<<   "tensorCreated Tensor size:"<<std::endl;
+    std::cout<< tensorCreated <<depth <<std::endl;   
+    
     // auto tensorCreated = torch::from_blob(tensorDataPtr, { rows,colums,channels }, c10::TensorOptions().dtype(torch::kFloat32))/*.to(torch::kCUDA)*/;
     // tensorCreated = tensorCreated.to(device);
 
