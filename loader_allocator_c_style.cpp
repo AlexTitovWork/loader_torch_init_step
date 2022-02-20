@@ -169,9 +169,10 @@ int main(int argc, const char *argv[]){
     // auto tensorCreated = torch::from_blob(tensorDataPtr, { rows,colums,channels }, options)/*.to(torch::kCUDA)*/;
 
 
-    double array[] = { 1, 2, 3, 4, 5};
-    auto options = torch::TensorOptions().dtype(torch::kFloat64).device(torch::kCUDA, 0);
-    torch::Tensor tharray = torch::from_blob(array, {5}, options);
+
+    float * tensorDataPtr = new float[rows*colums*channels];
+    auto tensorCreated = torch::from_blob(tensorDataPtr, { rows,colums,channels }, c10::TensorOptions().dtype(torch::kFloat32))/*.to(torch::kCUDA)*/;
+    tensorCreated = tensorCreated.to(device);
 
 
     /*
