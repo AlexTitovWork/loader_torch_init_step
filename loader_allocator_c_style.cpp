@@ -199,13 +199,14 @@ int main(int argc, const char *argv[]){
      * @brief directly CUDA memory allocation using device tag
      * 
      */
-    torch::Tensor tensor_image = torch::zeros({1,height,width,3}, device);
+    // torch::Tensor tensor_image = torch::zeros({1,height,width,3}, device);
     /**
      * @brief Allocation into HOST and pin it. Than redefine this memory for GPU
      * 
      */
     // torch::Tensor tensor_image = torch::rand({1,400,400,3});
-    // tensor_image = tensor_image.pin_memory();
+    torch::Tensor tensor_image = torch::zeros({1,height,width,3});
+    tensor_image = tensor_image.pin_memory();
 
     //-----------------------------------------------------------------------------
     /**
