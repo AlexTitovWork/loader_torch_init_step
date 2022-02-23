@@ -129,6 +129,7 @@ Sun Jan 16 14:58:54 2022
 //------------------------------------------------------------------------------
 // std::array<int64_t,4> tensor_dim = {4, 32, 32, 32};
 
+  int64_t tensor_dim = 1234567;
 
 int main(int argc, const char *argv[]){
   clock_t tTotal = clock();
@@ -159,12 +160,14 @@ int main(int argc, const char *argv[]){
   int64_t alignment                = sizeof(float);
   int64_t id                       = 0xD0D0CACA; // Some magic number
 // std::array<int64_t,4> tensor_dim = {4, 32, 32, 32};
+  // int64_t tensor_dim = 1234567;
+  
+  printf("tensor_dim %p \n",&tensor_dim);
 
-  int64_t *p=(int64_t  *)0x5612312e5020;
-  printf("%ld \n",*p);
 
-  printf("%p \n", p);  
-  // printf("tensor_dim %p \n",&tensor_dim);
+  // int64_t *p=(int64_t  *)0x5612312e5020;
+  // printf("%ld \n",*tensor_dim);
+  // printf("%p \n", tensor_dim);
 
 //------------------------------------------
 
