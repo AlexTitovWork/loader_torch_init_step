@@ -63,7 +63,8 @@ Makefile:100: recipe for target 'all' failed
 make: *** [all] Error 2
 
 SOLVED 
-sometimes after delete all cache and cmake temp files use:
+1. reinstall libtorch from other link !
+2. sometimes after delete all cache and cmake temp files use:
 sudo cmake -DCMAKE_PREFIX_PATH=/usr/local/lib . 
 # in local installation of Open CV 
 sudo cmake -DCMAKE_PREFIX_PATH=/home/alex/local/lib . 
