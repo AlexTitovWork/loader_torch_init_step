@@ -4,12 +4,15 @@ SET(CUDA_LAUNCH_BLOCKING 1)
 SET(CMAKE_CUDA_COMPILER /usr/local/cuda-11.6/bin/nvcc)
 SET(CUDA_TOOLKIT_ROOT_DIR /usr/local/cuda-11.6)
 # SET(CUDA_CUBLAS_LIBRARIES /usr/local/cuda/lib64)
+SET(CUDA_CUBLAS_LIBRARIES /home/alex/lib/cuda-11.6-cudnn8.3.2/lib64)
 
 # SET(CUDA_cublas_device_LIBRARY /usr/local/cuda-11.6/lib64)
 SET(CUDA_cublas_device_LIBRARY /home/alex/lib/cuda-11.6-cudnn8.3.2/lib64)
 
 # SET(CMAKE_CUDA_COMPILER_ENV_VAR /usr/local/cuda/bin/nvcc)
-SET(CUDA_INCLUDE_DIRS /usr/local/cuda-11.6/include)
+# SET(CUDA_INCLUDE_DIRS /usr/local/cuda-11.6/include)
+SET(CUDA_INCLUDE_DIRS /home/alex/lib/cuda-11.6-cudnn8.3.2/include)
+
 
 if(NOT DEFINED CMAKE_CUDA_ARCHITECTURES)
   set(CMAKE_CUDA_ARCHITECTURES 50)
