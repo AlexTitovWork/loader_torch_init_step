@@ -136,7 +136,8 @@ int main(int argc, const char *argv[]){
    * Tested and worked.
    */
   torch::globalContext().setUserEnabledCuDNN(false);
-  
+  print(torch::globalContext().getUserEnabledCuDNN()));
+  print(torch::cuda::cudnn_is_available());
   torch::Device device = torch::kCPU;
   if (torch::cuda::is_available()){
     std::cout << "CUDA is available! Training on GPU." << std::endl;
