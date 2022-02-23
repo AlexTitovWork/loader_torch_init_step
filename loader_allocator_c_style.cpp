@@ -376,12 +376,12 @@ int main(int argc, const char *argv[]){
 
 
     // //---------------
-    // system("pause");
-    // cin.clear();
-    // cin.ignore(numeric_limits<streamsize>::max(), '\n');
-    // std::string dummy;
-    // std::cout << "Press any key to continue . . .";
-    // std::getline(std::cin, dummy);
+    system("pause");
+    cin.clear();
+    cin.ignore(numeric_limits<streamsize>::max(), '\n');
+    std::string dummy;
+    std::cout << "Press any key to continue . . .";
+    std::getline(std::cin, dummy);
     // //---------------
     
     std::cout << "ok!\n";
