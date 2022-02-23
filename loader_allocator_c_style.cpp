@@ -146,17 +146,7 @@ int main(int argc, const char *argv[]){
     int64_t alignment                = sizeof(float);
     int64_t id                       = 0xD0D0CACA; // Some magic number
 
-     try {
-        auto tensor =  cudnn_frontend::TensorBuilder()
-                                    .setDim(tensor_dim.size(), tensor_dim.data())
-                                    .setStrides(tensor_str.size(), tensor_str.data())
-                                    .setId(id)
-                                    .setAlignment(alignment)
-                                    .setDataType(data_type)
-                                    .build();
-    } catch (cudnn_frontend::cudnnException &e) {
-        std::cout << "Exception in tensor creation " << e.what() << std::endl;
-    }
+    cudnnCnnInferVersionCheck();
 //------------------------------------------
 
 
