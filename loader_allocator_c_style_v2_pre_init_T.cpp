@@ -17,8 +17,6 @@
 // #include <cuda.h>
 // #include <cuda_runtime.h>
 #include <cudnn.h>
-#include <cuda_runtime.h>
-
 //async transfer
 // #include <c10/cuda/CUDAStream.h>
 // #include <c10/cuda/CUDAGuard.h>
@@ -143,13 +141,10 @@ int main(int argc, const char *argv[]){
   std::cout <<"torch::cuda::cudnn_is_available() " << torch::cuda::cudnn_is_available() << std::endl;
   std::cout << "Tensor creation comparison" << std::endl;
   std::cout << cudnnCnnInferVersionCheck()<< std::endl;
+  torch::Tensor init_mem_tensor = torch::zeros({1,1,1,3});
+  init_mem_tensor = init_mem_tensor.pin_memory();
 
-  // Ligt pre inittвывсывсываеttt
-  // torch::Tensor init_mem_tensor = torch::zeros({1,1,1,3});
-  // init_mem_tensor = init_mem_tensor.pin_memory();
-
-  torch::manual_seed(0);
-  torch::NoGradGuard guard;
+  
   
   std::array<int64_t,4> tensor_dim = {4, 32, 32, 32};
   std::array<int64_t,4> tensor_str = {32768, 1024, 32, 1}; // NCHW format
@@ -286,7 +281,7 @@ int main(int argc, const char *argv[]){
 
     //-------------------------------------------------------------------------
     clock_t tTransferData = clock();
-    // torch::cuda::synchronize();
+    torch::cuda::synchronize();
 
     /**
        * @brief Approach 3. CUDA Asynch approach, data transfering here in prepinned and preallocated memory.
@@ -343,8 +338,7 @@ int main(int argc, const char *argv[]){
       // tensor_image = tensor_image.to(torch::kCUDA, torch::kFloat, non_blocking);
       //-------------------------------------------------------------------------
       // Check Tensor in CUDA memory
-
-      // torch::cuda::synchronize();
+      torch::cuda::synchronize();
 
       if (TIMERS_FLAG){
 
@@ -364,14 +358,14 @@ int main(int argc, const char *argv[]){
     }
 
 
-    // //---------------
-    // system("pause");
-    // cin.clear();
-    // cin.ignore(numeric_limits<streamsize>::max(), '\n');
-    // std::string dummy;
-    // std::cout << "Press any key to continue . . .";
-    // std::getline(std::cin, dummy);
-    // //---------------
+    //---------------
+    system("pause");
+    cin.clear();
+    cin.ignore(numeric_limits<streamsize>::max(), '\n');
+    std::string dummy;
+    std::cout << "Press any key to continue . . .";
+    std::getline(std::cin, dummy);
+    //---------------
     
     std::cout << "ok!\n";
   }
