@@ -129,7 +129,7 @@ Sun Jan 16 14:58:54 2022
 //------------------------------------------------------------------------------
 // std::array<int64_t,4> tensor_dim = {4, 32, 32, 32};
 
-  int64_t tensor_dim = 1234567;
+  // int64_t tensor_dim = 1234567;
 
 int main(int argc, const char *argv[]){
   clock_t tTotal = clock();
@@ -162,12 +162,12 @@ int main(int argc, const char *argv[]){
 // std::array<int64_t,4> tensor_dim = {4, 32, 32, 32};
   // int64_t tensor_dim = 1234567;
   
-  printf("tensor_dim %p \n",&tensor_dim);
+  // printf("tensor_dim %p \n",&tensor_dim);
 
 
-  // int64_t *p=(int64_t  *)0x5612312e5020;
-  // printf("%ld \n",*tensor_dim);
-  // printf("%p \n", tensor_dim);
+  int64_t *tensor_dim=(int64_t  *)0x55720474a010;
+  printf("%ld \n",*tensor_dim);
+  printf("%p \n", tensor_dim);
 
 //------------------------------------------
 
@@ -376,12 +376,12 @@ int main(int argc, const char *argv[]){
 
 
     // //---------------
-    system("pause");
-    cin.clear();
-    cin.ignore(numeric_limits<streamsize>::max(), '\n');
-    std::string dummy;
-    std::cout << "Press any key to continue . . .";
-    std::getline(std::cin, dummy);
+    // system("pause");
+    // cin.clear();
+    // cin.ignore(numeric_limits<streamsize>::max(), '\n');
+    // std::string dummy;
+    // std::cout << "Press any key to continue . . .";
+    // std::getline(std::cin, dummy);
     // //---------------
     
     std::cout << "ok!\n";
