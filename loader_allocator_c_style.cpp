@@ -358,17 +358,14 @@ int main(int argc, const char *argv[]){
     }
 
 
-
-
-    int ch = 0;
-
-    std::cout << "\nPress any key to continue . . . ";
-
-    do {
-        ch = getch();
-    } while (ch != 0);
-
-    std::cout << std::endl;
+    //---------------
+    system("pause");
+    cin.clear();
+    cin.ignore(numeric_limits<streamsize>::max(), '\n');
+    std::string dummy;
+    std::cout << "Press any key to continue . . .";
+    std::getline(std::cin, dummy);
+    //---------------
     
     std::cout << "ok!\n";
   }
