@@ -142,7 +142,7 @@ int main(int argc, const char *argv[]){
   std::cout << "Tensor creation comparison" << std::endl;
   std::cout << cudnnCnnInferVersionCheck()<< std::endl;
   torch::Tensor init_mem_tensor = torch::zeros({1,1,1,3});
-  init_mem_tensor = tensor_image.pin_memory();
+  init_mem_tensor = init_mem_tensor.pin_memory();
 
   
   
