@@ -136,22 +136,19 @@ int main(int argc, const char *argv[]){
    * Module::to(at::ScalarType dtype, bool non_blocking)
    * Tested and worked.
    */
-
   torch::globalContext().setUserEnabledCuDNN(false);
   std::cout <<"torch::cuda::cudnn_is_available() " << torch::cuda::cudnn_is_available() << std::endl;
-  std::cout << "Tensor creation comparison" << std::endl;
-  std::cout << cudnnCnnInferVersionCheck()<< std::endl;
-  
-  
-  
-  std::array<int64_t,4> tensor_dim = {4, 32, 32, 32};
-  std::array<int64_t,4> tensor_str = {32768, 1024, 32, 1}; // NCHW format
-  cudnnDataType_t data_type        = CUDNN_DATA_FLOAT;
-  int64_t alignment                = sizeof(float);
-  int64_t id                       = 0xD0D0CACA; // Some magic number
-
-  
 //------------------------------------------
+    std::cout << "Tensor creation comparison" << std::endl;
+    std::array<int64_t,4> tensor_dim = {4, 32, 32, 32};
+    std::array<int64_t,4> tensor_str = {32768, 1024, 32, 1}; // NCHW format
+    cudnnDataType_t data_type        = CUDNN_DATA_FLOAT;
+    int64_t alignment                = sizeof(float);
+    int64_t id                       = 0xD0D0CACA; // Some magic number
+
+    cudnnCnnInferVersionCheck();
+//------------------------------------------
+
 
 
 
@@ -169,6 +166,49 @@ int main(int argc, const char *argv[]){
     }
 
     printf("Device select     Time taken: %.2fs\n", (double)(clock() - tPreLoad) / CLOCKS_PER_SEC);
+
+    /**
+     * Paly with allocators
+     * GPU MEMORY			       : 0.7 GB
+     * DEDICATED GPU MEMORY  : 0.6 GB
+    */
+    
+    // cudaEvent_t start, stop; 
+    // cudaEventCreate(&start);
+    // cudaEventCreate(&stop);
+    int rows = 10000;
+    int colums = 10000;
+    int channels = 3;
+    clock_t tCPU_alloc = clock();
+
+    float * tensorDataPtr = new float[rows*colums*channels];
+    
+    printf("CPU allocator            Time taken: %.2fs\n", (double)(clock() - tCPU_alloc) / CLOCKS_PER_SEC);
+
+    clock_t tCPU_Tensor_alloc = clock();
+
+    auto tensorCreated = torch::from_blob(tensorDataPtr, { rows,colums,channels }, c10::TensorOptions().dtype(torch::kFloat32))/*.to(torch::kCUDA)*/;
+    
+    printf("CPU Tensor init from host      Time taken: %.2fs\n", (double)(clock() - tCPU_Tensor_alloc) / CLOCKS_PER_SEC);
+
+    std::cout<<   "tensorCreated Tensor size:"<<std::endl;
+    std::cout<< " " + to_string(rows) + " " + to_string(colums) + " " + to_string(channels) + " "<<std::endl;  
+
+
+    // tensorCreated = tensorCreated.to(device);
+    // std::cout<< tensorCreated << " " + to_string(rows) + " " + to_string(colums) + " " + to_string(channels) + " "<<std::endl;   
+
+
+    /*
+    auto tensorCreated = torch::from_blob(tensorDataPtr, { rows,colums,channels }, c10::TensorOptions().dtype(torch::kFloat32));
+    tensorCreated = tensorCreated.to(device);
+    */  
+
+    // cudaEventRecord(stop);
+    // cudaEventSynchronize(stop);
+    // float milliseconds = 0;
+    // cudaEventElapsedTime(&milliseconds, start, stop);
+    // printf("Elapsed time : %.2f ms\n" ,milliseconds);
 
     //-------------------------------------------------------
     int height =400;
