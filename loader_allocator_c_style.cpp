@@ -160,7 +160,7 @@ int main(int argc, const char *argv[]){
   int64_t id                       = 0xD0D0CACA; // Some magic number
 // std::array<int64_t,4> tensor_dim = {4, 32, 32, 32};
 
-  std::array<int64_t,4> *p=(std::array<int64_t,4>  *)0x5612312e5020;
+  int64_t *p=(int64_t 4  *)0x5612312e5020;
   printf("%d \n",*p);
 
   printf("%p \n", p);  
