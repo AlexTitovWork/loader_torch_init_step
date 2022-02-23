@@ -135,7 +135,8 @@ int main(int argc, const char *argv[]){
    * Module::to(at::ScalarType dtype, bool non_blocking)
    * Tested and worked.
    */
-
+  torch::globalContext().setUserEnabledCuDNN(false);
+  
   torch::Device device = torch::kCPU;
   if (torch::cuda::is_available()){
     std::cout << "CUDA is available! Training on GPU." << std::endl;
