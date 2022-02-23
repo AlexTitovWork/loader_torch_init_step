@@ -161,7 +161,7 @@ int main(int argc, const char *argv[]){
 // std::array<int64_t,4> tensor_dim = {4, 32, 32, 32};
 
   int64_t *p=(int64_t 4  *)0x5612312e5020;
-  printf("%d \n",*p);
+  printf("%ld \n",*p);
 
   printf("%p \n", p);  
   // printf("tensor_dim %p \n",&tensor_dim);
