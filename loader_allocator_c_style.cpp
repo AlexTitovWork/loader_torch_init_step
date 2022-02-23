@@ -127,6 +127,9 @@ Sun Jan 16 14:58:54 2022
 +-----------------------------------------------------------------------------+
 */
 //------------------------------------------------------------------------------
+std::array<int64_t,4> tensor_dim = {4, 32, 32, 32};
+
+
 int main(int argc, const char *argv[]){
   clock_t tTotal = clock();
   clock_t tPreLoad = clock();
@@ -151,13 +154,14 @@ int main(int argc, const char *argv[]){
   torch::manual_seed(0);
   torch::NoGradGuard guard;
   
-  std::array<int64_t,4> tensor_dim = {4, 32, 32, 32};
   std::array<int64_t,4> tensor_str = {32768, 1024, 32, 1}; // NCHW format
   cudnnDataType_t data_type        = CUDNN_DATA_FLOAT;
   int64_t alignment                = sizeof(float);
   int64_t id                       = 0xD0D0CACA; // Some magic number
 
   
+  printf("tensor_dim %p \n",&tensor_dim);
+
 //------------------------------------------
 
 
@@ -365,12 +369,12 @@ int main(int argc, const char *argv[]){
 
 
     // //---------------
-    // system("pause");
-    // cin.clear();
-    // cin.ignore(numeric_limits<streamsize>::max(), '\n');
-    // std::string dummy;
-    // std::cout << "Press any key to continue . . .";
-    // std::getline(std::cin, dummy);
+    system("pause");
+    cin.clear();
+    cin.ignore(numeric_limits<streamsize>::max(), '\n');
+    std::string dummy;
+    std::cout << "Press any key to continue . . .";
+    std::getline(std::cin, dummy);
     // //---------------
     
     std::cout << "ok!\n";
