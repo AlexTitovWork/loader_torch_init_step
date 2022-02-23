@@ -16,6 +16,7 @@
 // For *.cu files
 // #include <cuda.h>
 // #include <cuda_runtime.h>
+#include <cudnn.h>
 //async transfer
 // #include <c10/cuda/CUDAStream.h>
 // #include <c10/cuda/CUDAGuard.h>
@@ -136,8 +137,19 @@ int main(int argc, const char *argv[]){
    * Tested and worked.
    */
   torch::globalContext().setUserEnabledCuDNN(false);
-  print(torch::globalContext().getUserEnabledCuDNN());
-  print(torch::cuda::cudnn_is_available());
+  std::cout << torch::cuda::cudnn_is_available()) << std::endl;
+//------------------------------------------
+    std::cout << "Tensor creation comparison" << std::endl;
+    std::array<int64_t,4> tensor_dim = {4, 32, 32, 32};
+    std::array<int64_t,4> tensor_str = {32768, 1024, 32, 1}; // NCHW format
+    cudnnDataType_t data_type        = CUDNN_DATA_FLOAT;
+    int64_t alignment                = sizeof(float);
+    int64_t id                       = 0xD0D0CACA; // Some magic number
+//------------------------------------------
+
+
+
+
   torch::Device device = torch::kCPU;
   if (torch::cuda::is_available()){
     std::cout << "CUDA is available! Training on GPU." << std::endl;
