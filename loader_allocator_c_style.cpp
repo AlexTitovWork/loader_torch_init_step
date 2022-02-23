@@ -191,7 +191,7 @@ int main(int argc, const char *argv[]){
     torch::Tensor tensor_image = torch::zeros({1,height,width,3});
 
 
-    printf("Tensor zeros alloc on CPU \nMem allocation   Time taken: %.2fs\n\n", (double)(clock() - tAllocTensor) / CLOCKS_PER_SEC);
+    printf("Tensor zeros alloc on CPU   Time taken: %.2fs\n\n", (double)(clock() - tAllocTensor) / CLOCKS_PER_SEC);
     clock_t tPin = clock();
     tensor_image = tensor_image.pin_memory();
 
@@ -357,6 +357,18 @@ int main(int argc, const char *argv[]){
       printf("Processing. Time taken: %.2fs\n", (double)(clock() - tImgOneConversion) / CLOCKS_PER_SEC);
     }
 
+
+
+
+    int ch = 0;
+
+    std::cout << "\nPress any key to continue . . . ";
+
+    do {
+        ch = getch();
+    } while (ch != 0);
+
+    std::cout << std::endl;
     
     std::cout << "ok!\n";
   }
