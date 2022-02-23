@@ -90,12 +90,9 @@ void kernel(float num, float *a, int N)
 {
 
   int index = threadIdx.x + blockIdx.x * blockDim.x;
-  int stride = blockDim.x * gridDim.x;
-
-  for(int i = index; i < N; i += stride)
-  {
-    a[i] = num;
-  }
+  // int stride = blockDim.x * gridDim.x;
+  if (index < N) 
+    a[index] = num;
 }
 
 
@@ -139,6 +136,8 @@ int main(int argc, const char *argv[]){
 
     //-----------------------------------------------------------------------------------
     int N = 2048*2048;
+    // int N = 1024*1024*3;
+    
     float *host_a, *device_a;        // Define host-specific and device-specific arrays.
     int size = sizeof(float) * N;
 
@@ -158,6 +157,7 @@ int main(int argc, const char *argv[]){
     // size_t numberOfSMs;
 
     // numberOfSMs = 1;
+
     threadsPerBlock = 256;
     numberOfBlocks = N /256 + 1;
 

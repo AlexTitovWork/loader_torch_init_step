@@ -180,7 +180,7 @@ int main(int argc, const char *argv[]){
 
     // tensorCreated = tensorCreated.to(device);
     // std::cout<< tensorCreated << " " + to_string(rows) + " " + to_string(colums) + " " + to_string(channels) + " "<<std::endl;   
-    
+
 
     /*
     auto tensorCreated = torch::from_blob(tensorDataPtr, { rows,colums,channels }, c10::TensorOptions().dtype(torch::kFloat32));
