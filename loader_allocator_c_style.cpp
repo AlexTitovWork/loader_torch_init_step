@@ -137,7 +137,7 @@ int main(int argc, const char *argv[]){
    * Tested and worked.
    */
   torch::globalContext().setUserEnabledCuDNN(false);
-  std::cout << torch::cuda::cudnn_is_available()) << std::endl;
+  std::cout << torch::cuda::cudnn_is_available() << std::endl;
 //------------------------------------------
     std::cout << "Tensor creation comparison" << std::endl;
     std::array<int64_t,4> tensor_dim = {4, 32, 32, 32};
