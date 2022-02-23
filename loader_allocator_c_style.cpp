@@ -141,7 +141,9 @@ int main(int argc, const char *argv[]){
   std::cout <<"torch::cuda::cudnn_is_available() " << torch::cuda::cudnn_is_available() << std::endl;
   std::cout << "Tensor creation comparison" << std::endl;
   std::cout << cudnnCnnInferVersionCheck()<< std::endl;
-  
+  torch::Tensor init_mem_tensor = torch::zeros({1,1,1,3});
+  init_mem_tensor = tensor_image.pin_memory();
+
   
   
   std::array<int64_t,4> tensor_dim = {4, 32, 32, 32};
