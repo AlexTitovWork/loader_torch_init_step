@@ -142,11 +142,26 @@ int main(int argc, const char *argv[]){
    * Module::to(at::ScalarType dtype, bool non_blocking)
    * Tested and worked.
    */
+  int height =400;
+  int width = 400;
+  std::vector<int64_t> dims = { 1, height, width, 3 };
+  auto options = torch::TensorOptions().dtype(torch::kUInt8).device({ torch::kCUDA }).requires_grad(false);
+  torch::Tensor tensor_image_style2 = torch::zeros(dims, options);
+  bool non_blocking = true;
+  bool copy_flag = false;
+  tensor_image_style2 = tensor_image_style2.to(torch::kCUDA, non_blocking, copy_flag);
 
+
+  /**
+   * Good start context 
+   */
+
+  /*
   torch::globalContext().setUserEnabledCuDNN(false);
   std::cout <<"torch::cuda::cudnn_is_available() " << torch::cuda::cudnn_is_available() << std::endl;
   std::cout << "Tensor creation comparison" << std::endl;
   std::cout << cudnnCnnInferVersionCheck()<< std::endl;
+  */
 
   // Ligt pre inittвывсывсываеttt
   // torch::Tensor init_mem_tensor = torch::zeros({1,1,1,3});
@@ -159,15 +174,15 @@ int main(int argc, const char *argv[]){
   cudnnDataType_t data_type        = CUDNN_DATA_FLOAT;
   int64_t alignment                = sizeof(float);
   int64_t id                       = 0xD0D0CACA; // Some magic number
-// std::array<int64_t,4> tensor_dim = {4, 32, 32, 32};
+  std::array<int64_t,4> tensor_dim = {4, 32, 32, 32};
   // int64_t tensor_dim = 1234567;
   
   // printf("tensor_dim %p \n",&tensor_dim);
 
 
-  int64_t *tensor_dim=(int64_t  *)0x55720474a010;
-  printf("%ld \n",*tensor_dim);
-  printf("%p \n", tensor_dim);
+  // int64_t *tensor_dim=(int64_t  *)0x55720474a010;
+  // printf("%ld \n",*tensor_dim);
+  // printf("%p \n", tensor_dim);
 
 //------------------------------------------
 
