@@ -149,11 +149,12 @@ int main(int argc, const char *argv[]){
   torch::Tensor tensor_image_style2 = torch::zeros(dims, options);
   bool non_blocking = true;
   bool copy_flag = false;
+  std::cout << "non_blocking: " + non_blocking << std::endl;
   tensor_image_style2 = tensor_image_style2.to(torch::kCUDA, non_blocking, copy_flag);
 
 
   /**
-   * Good start context 
+   * Good start context , device init...
    */
 
   /*
@@ -357,7 +358,7 @@ int main(int argc, const char *argv[]){
        */
       // torch::cuda::synchronize(-1);
       // tensor_image = tensor_image.to(torch::kCUDA);
-      tensor_image = tensor_image.to(device);
+      tensor_image = tensor_image.to(device, );
 
 
       height = tensor_image.size(0);
