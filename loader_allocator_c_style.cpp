@@ -358,7 +358,7 @@ int main(int argc, const char *argv[]){
        */
       // torch::cuda::synchronize(-1);
       // tensor_image = tensor_image.to(torch::kCUDA);
-      tensor_image = tensor_image.to(device, );
+      tensor_image = tensor_image.to(device);
 
 
       height = tensor_image.size(0);
